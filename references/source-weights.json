@@ -1,0 +1,276 @@
+{
+  "version": 1,
+  "purpose": "Activate authoritative sources for Grill for Vitals without turning the skill into a generic code reviewer.",
+  "policy": {
+    "authoritative_first": true,
+    "verify_current_before_version_claims": true,
+    "reject_generic_code_hygiene_sources": true,
+    "unknown_is_not_safe": true
+  },
+  "weights": [
+    {
+      "id": "nist-ai-rmf",
+      "name": "NIST AI Risk Management Framework 1.0",
+      "tier": "A",
+      "default_weight": 0.95,
+      "scope": ["ai-risk", "high-trust-ai", "agent-governance"],
+      "activation": "ai_or_high_trust"
+    },
+    {
+      "id": "nist-ai-600-1",
+      "name": "NIST AI 600-1 Generative AI Profile",
+      "tier": "A",
+      "default_weight": 0.95,
+      "scope": ["generative-ai", "llm", "predeployment-testing", "incident-disclosure"],
+      "activation": "genai_or_llm"
+    },
+    {
+      "id": "owasp-llm-top10",
+      "name": "OWASP Top 10 for LLM Applications 2025",
+      "tier": "B",
+      "default_weight": 0.9,
+      "scope": ["prompt-injection", "sensitive-disclosure", "excessive-agency", "rag", "llm-supply-chain"],
+      "activation": "llm_app"
+    },
+    {
+      "id": "owasp-agentic-apps",
+      "name": "OWASP Top 10 for Agentic Applications 2026",
+      "tier": "B",
+      "default_weight": 0.9,
+      "scope": ["agent-goals", "tool-misuse", "identity-abuse", "memory-poisoning", "cascading-failure"],
+      "activation": "agentic_workflow"
+    },
+    {
+      "id": "owasp-agentic-skills",
+      "name": "OWASP Agentic Skills Top 10",
+      "tier": "B-provisional",
+      "default_weight": 0.75,
+      "scope": ["skills", "plugins", "permission-manifest", "sandboxing", "skill-supply-chain"],
+      "activation": "agent_skill_or_plugin"
+    },
+    {
+      "id": "mitre-atlas",
+      "name": "MITRE ATLAS",
+      "tier": "B",
+      "default_weight": 0.8,
+      "scope": ["ai-adversary", "attack-path", "model-system-threats"],
+      "activation": "ai_attack_path"
+    },
+    {
+      "id": "owasp-asvs",
+      "name": "OWASP ASVS",
+      "tier": "B",
+      "default_weight": 0.9,
+      "scope": ["web-auth", "sessions", "access-control", "validation", "logging", "data-protection"],
+      "activation": "web_auth_or_tenancy"
+    },
+    {
+      "id": "owasp-api-top10",
+      "name": "OWASP API Security Top 10",
+      "tier": "B",
+      "default_weight": 0.85,
+      "scope": ["api-authz", "sensitive-business-flows", "ssrf", "resource-consumption"],
+      "activation": "api_or_business_flow"
+    },
+    {
+      "id": "owasp-top10",
+      "name": "OWASP Top 10 2025",
+      "tier": "B",
+      "default_weight": 0.65,
+      "scope": ["web-application-risk", "injection", "auth", "access-control", "misconfiguration"],
+      "activation": "broad_web_app_vital"
+    },
+    {
+      "id": "nist-sp-800-63-4",
+      "name": "NIST SP 800-63 Rev. 4 Digital Identity Guidelines",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["digital-identity", "identity-proofing", "authentication", "federation", "account-recovery"],
+      "activation": "high_risk_identity_or_auth"
+    },
+    {
+      "id": "nist-ssdf",
+      "name": "NIST SSDF SP 800-218 final; Rev. 1 draft as applicable",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["secure-sdlc", "supply-chain", "vulnerability-reduction", "software-producer"],
+      "activation": "privileged_build_deploy_or_supplier"
+    },
+    {
+      "id": "cisa-secure-by-design",
+      "name": "CISA Secure by Design and Secure by Demand",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["secure-defaults", "product-accountability", "supplier-evaluation"],
+      "activation": "product_or_vendor_risk"
+    },
+    {
+      "id": "nist-csf-2",
+      "name": "NIST Cybersecurity Framework 2.0",
+      "tier": "A",
+      "default_weight": 0.8,
+      "scope": ["risk-governance", "incident-readiness", "recoverability"],
+      "activation": "incident_or_program_risk"
+    },
+    {
+      "id": "nist-sp-800-61r3",
+      "name": "NIST SP 800-61 Rev. 3",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["incident-response", "evidence-plane", "recovery"],
+      "activation": "incident_response"
+    },
+    {
+      "id": "nist-sp-800-82r3",
+      "name": "NIST SP 800-82 Rev. 3 Guide to Operational Technology Security",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["operational-technology", "industrial-control", "physical-safety", "iot", "ot-security"],
+      "activation": "operational_technology_or_safety_critical"
+    },
+    {
+      "id": "mitre-cwe-top25",
+      "name": "MITRE CWE Top 25",
+      "tier": "B",
+      "default_weight": 0.75,
+      "scope": ["weakness-prioritization", "root-cause"],
+      "activation": "validated_software_weakness_on_vital_path"
+    },
+    {
+      "id": "nist-privacy-framework",
+      "name": "NIST Privacy Framework",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["privacy-risk", "pii", "retention", "data-flows"],
+      "activation": "pii_or_customer_content"
+    },
+    {
+      "id": "ftc-protecting-pii",
+      "name": "FTC Protecting Personal Information",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["personal-information", "data-minimization", "disposal", "vendor-access"],
+      "activation": "us_business_pii"
+    },
+    {
+      "id": "ftc-glba-safeguards",
+      "name": "FTC GLBA Safeguards Rule",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["customer-financial-information", "financial-records", "safeguards-rule", "service-providers"],
+      "activation": "financial_customer_information"
+    },
+    {
+      "id": "hhs-hipaa-security",
+      "name": "HHS HIPAA Security Rule",
+      "tier": "A",
+      "default_weight": 0.95,
+      "scope": ["ephi", "health-data", "covered-entity", "business-associate"],
+      "activation": "health_or_ephi"
+    },
+    {
+      "id": "nist-sp-800-66r2",
+      "name": "NIST SP 800-66 Rev. 2 HIPAA Security Rule guide",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["ephi", "healthcare-safeguards", "risk-assessment", "technical-safeguards"],
+      "activation": "health_or_ephi"
+    },
+    {
+      "id": "ftc-coppa",
+      "name": "FTC COPPA Rule",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["children", "child-privacy", "under-13", "parental-consent", "online-service"],
+      "activation": "child_directed_or_under13_data"
+    },
+    {
+      "id": "ftc-biometric-policy",
+      "name": "FTC biometric information policy statement",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["biometric-data", "facial-recognition", "voice", "fingerprint", "ml-claims", "bias"],
+      "activation": "biometric_information"
+    },
+    {
+      "id": "pci-dss",
+      "name": "PCI DSS",
+      "tier": "A",
+      "default_weight": 0.95,
+      "scope": ["cardholder-data", "payment-account-data", "cde"],
+      "activation": "cardholder_or_payment_account_data"
+    },
+    {
+      "id": "ofac-sanctions-framework",
+      "name": "OFAC sanctions compliance framework and virtual currency guidance",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["sanctions", "blocked-persons", "virtual-currency", "international-payments", "risk-based-compliance"],
+      "activation": "sanctions_or_cross_border_finance"
+    },
+    {
+      "id": "bis-ear-encryption",
+      "name": "BIS Export Administration Regulations encryption controls",
+      "tier": "A",
+      "default_weight": 0.8,
+      "scope": ["export-control", "encryption-software", "controlled-technology", "source-code", "international-transfer"],
+      "activation": "export_control_or_encryption_software"
+    },
+    {
+      "id": "fedramp",
+      "name": "FedRAMP Rev5 and evolving 20x",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["federal-cloud", "authorization", "continuous-monitoring", "persistent-validation"],
+      "activation": "federal_cloud"
+    },
+    {
+      "id": "cmmc",
+      "name": "Cybersecurity Maturity Model Certification",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["fci", "cui", "defense-industrial-base", "dod-contracts"],
+      "activation": "defense_fci_or_cui"
+    },
+    {
+      "id": "nist-sp-800-171r3",
+      "name": "NIST SP 800-171 Rev. 3 CUI protection",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["cui", "nonfederal-systems", "defense-supplier", "security-requirements"],
+      "activation": "defense_fci_or_cui"
+    },
+    {
+      "id": "nist-sp-800-53r5",
+      "name": "NIST SP 800-53 Rev. 5 security and privacy controls",
+      "tier": "A",
+      "default_weight": 0.85,
+      "scope": ["federal-controls", "security-controls", "privacy-controls", "fedramp"],
+      "activation": "federal_cloud"
+    },
+    {
+      "id": "aicpa-tsc",
+      "name": "AICPA Trust Services Criteria",
+      "tier": "A",
+      "default_weight": 0.75,
+      "scope": ["soc2", "customer-commitments", "security", "availability", "confidentiality", "privacy"],
+      "activation": "soc2_or_customer_trust_commitment"
+    },
+    {
+      "id": "greptile-ai-review-security",
+      "name": "Greptile AI review security and configuration patterns",
+      "tier": "D",
+      "default_weight": 0.55,
+      "scope": ["ai-code-review", "repo-indexing", "graph-context", "related-repo-context", "custom-review-rules", "review-filter-bypass", "vendor-retention", "model-provider-boundary", "support-access"],
+      "activation": "ai_code_review_tool_or_skill_design"
+    },
+    {
+      "id": "coderabbit-ai-review-security",
+      "name": "CodeRabbit AI review security and sandbox patterns",
+      "tier": "D",
+      "default_weight": 0.6,
+      "scope": ["ai-code-review", "sandbox", "short-lived-tokens", "third-party-analyzers", "cache-isolation", "vendor-incident-response"],
+      "activation": "ai_code_review_tool_or_analyzer_execution"
+    }
+  ]
+}

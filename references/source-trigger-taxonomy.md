@@ -1,0 +1,54 @@
+# Source Trigger Taxonomy
+
+Use this before reading `source-registry.md` broadly. It maps observed problem surfaces to source presets so Grill can activate a small source set instead of scanning every source.
+
+## Core Rule
+
+Route by observed catastrophic surface:
+
+```text
+surface signal -> vital family -> source preset -> exact source IDs
+```
+
+Executable route: source_activation_plan.py --surface "<observed problem surface>".
+
+If the surface is ambiguous, ask the one question in the table before activating regulated or domain-specific sources.
+
+## Trigger Families
+
+| Trigger family | Surface signals | Presets | Ask first when ambiguous |
+|---|---|---|---|
+| Identity and tenancy | login, session, password reset, recovery, SSO, OAuth, SAML, passkey, WebAuthn, MFA reset, admin/owner/payroll-admin roles, impersonation, organization invite, RBAC, RLS/row-level security, tenant ID, account takeover, API authz, BOLA/IDOR/BFLA, object-level or function-level authorization | `identity-auth` | Does this path unlock admin, tenant data, money, regulated data, or production authority? |
+| Control plane and supply chain | secret, token, deploy key, private key, GitHub App private key or installation token, service account/principal/token/key, KMS key, CI/CD, OIDC, GitHub Actions, signing, release, package publish, artifact, dependency execution, privileged workflow, Terraform plan/tfplan, CloudFormation, IaC scan, Checkov, tfsec, Terrascan, KICS, OPA/Rego policy, Kubernetes/k8s, kubeconfig, Kubernetes manifest, Helm chart, clusterrolebinding, cluster-admin, pod exec, pods/exec, pods/attach, privileged pod, AWS/GCP IAM, IAM role/policy, PassRole, AssumeRole, Lambda CreateFunction, roles/owner/editor, cloud admin/credential, access key, Entra/Azure role, Global Administrator, PIM, MDM/MAM, Intune App Protection, selective wipe, production database, container registry, prod image, protected branches | `control-plane-supply-chain` | Can this credential or workflow deploy, sign, publish, read tenants, delete, or administer identity? |
+| PII and customer content | PII, personal data, personal information, SSN, address, email, phone, IP address, cookie identifier, geolocation, birth date, prompt logs, raw/user/customer prompts, transcript, chat messages/logs, support recordings, uploads, attachments, customer files/invoices, private docs, legal docs/records, HR records, URL, S3/GCS/Azure Blob/object storage, signed URL, public bucket, bucket policy/ACL, CloudTrail Data Events, GetObject/ListBucket, mobile local storage, SharedPreferences, keychain/keystore, SQLite database, app sandbox, unmanaged app, personal cloud backup, analytics event/export, retention schedule/period, storage limitation, deletion trigger, DSAR/SAR/subject access, data subject rights, ROPA, processing purpose, recipient categories, lawful basis, purpose limitation, consent withdrawal, DPIA/privacy impact assessment, cross-border or third-country transfer, TIA, SCC, BCR, adequacy, subprocessor, DPA, vendor privacy due diligence, employee/workplace monitoring, deletion/export request, vendor or external processor | `privacy-customer-content` | What sensitive data class would be exposed in a breach? |
+| Financial customer data | bank statement, bank account, ACH, credit report, loan, lender note, underwriting, brokerage, trading, wire transfer/instructions, financial record, customer financial information, paystub, tax return, income verification, 1099, payroll records, account holdings, GLBA | `financial-customer-data` | Is this customer financial information or only ordinary billing metadata? |
+| Health/ePHI | patient, diagnosis, treatment, medical record/claims, claims adjudication, FHIR, lab results, prescription, medication history, mental health, therapist, ePHI, PHI, HIPAA, EHR, healthcare, covered entity, business associate | `health-ephi` | Is the system a covered entity/business associate workflow or otherwise handling health data? |
+| Child data | child, under 13, underage, minor, kids, K-12, student, school or school district, classroom, parental consent, COPPA, age gate/gating/verification, parental access, child deletion, child profiling, youth data, AADC, behavioral advertising to children | `child-privacy` | Is the product child-directed or knowingly collecting under-13 data? |
+| Biometrics | face recognition, fingerprint, voiceprint, voice authentication, voice ID, biometric, liveness, selfie, KYC, identity verification, palm vein, palm, retina, faceprint | `biometric-identity` | Is biometric data tied to access, money, eligibility, or high-trust decisions? |
+| Payments/cardholder | cardholder data/name, PAN/full PAN, CVV, credit card, card number, card integration, payment card/payment, payment account data, payment token, card storage, payment environment/form, checkout, tokenization, hosted provider, PSP, vaulting, card cashout/payout | `payments-cardholder` | Does cardholder/payment-account data enter the app or only the hosted provider? |
+| Sanctions/export | crypto, virtual currency, stablecoin, cross-border finance, cashout, blocked person/wallet, OFAC, sanctioned country/jurisdiction, encryption export, encryption SDK/library/software, EAR, ITAR, export controlled, foreign/overseas customer, controlled technology | `sanctions-export` | Is there international finance, virtual currency, encryption software, or controlled technology transfer? |
+| Combined payments and sanctions/export | card data plus crypto/cross-border/sanctions/export trigger | `payments-sanctions-export` | Are payment-card scope and sanctions/export scope both present? |
+| Agentic LLM | LLM, RAG, retrieved docs, summarizer/summary, summarized by agent, chatbot, prompt injection, function calling, tool use/calls, browser automation/tool, shell tool, MCP, memory, agent goal, AI/workflow/control agent, autonomous workflow, AI assistant, model output/recommendation/ranking, model-mediated workflow, LLM output, memorization/memorisation, PII leakage, prompt or training-data extraction | `agentic-llm` | Can the model influence tools, private data, decisions, sends, or state changes? |
+| AI review toolchain | PR bot, pull request bot, AI reviewer, reviewer app, Greptile, CodeRabbit, analyzer, RuboCop, Semgrep, TruffleHog, Presidio, linter, one-click fix, review sandbox, repo index, related repositories, code embeddings, short-lived GitHub token | `ai-review-toolchain` | Does the tool ingest source, execute analyzers, receive tokens, cache indexes, or mutate PRs? |
+| High-trust output | medical/legal/tax advice, tax filing, IRS, benefits, unemployment benefits, eligibility decision, government or immigration filing, investment advice, loan approval, employment screening, denial rationale, housing, hiring, compliance, official policy, safety guidance, dosage setting, automated decision-making, profiling with significant effects, human oversight/intervention, contesting automated decisions, AI Act high-risk | `high-trust-output` | Which current official domain source corpus governs the output? |
+| Safety/OT | door, lab equipment, device command, industrial control, SCADA, PLC, setpoint, IoT, actuator, robot, vehicle, drone, safety alarm, chemical pump, medical device, dosage setting, HVAC, cleanroom damper | `safety-ot` | Can software alter physical state or safety-critical operations? |
+| Incident/evidence | breach, incident, timeline, audit log/trail, SIEM, evidence store, forensics, chain of custody, postmortem, RTO, RPO, incident recovery, disaster recovery, recovery plan, restore/backup restore, restore test, ransomware, ransom note, mass file encryption, encrypted production data, offline/immutable/air-gapped backups, backup integrity, hash manifest, backup corruption, breach notification, 72-hour breach clock, processor breach notice, honeytoken, canary token/document, document beacon, EDR, endpoint telemetry, Falcon sensor, CrowdStrike, osquery, endpoint detection/DLP/forensics, investigation record | `incident-recovery` | Can the actor under review edit or delete the evidence used to investigate it? |
+| Cost/availability | retry, retries, fanout, job queue, queue backlog/fanout/retry, background job, model spend, rate limit or rate-limit bypass, outage, denial-of-wallet, denial of wallet, cost loop, recursive calls, quota exhausted, cloud bill, bill spike, infinite retry, token burn, GraphQL depth/query complexity/depth limit, recursive or nested query, API enumeration | `cost-availability` | Can this loop spend money, exhaust quota, or take production down? |
+| SOC 2/customer trust | SOC 2, SOC2, SOC readiness, Trust Services Criteria, customer trust, trust center, availability/confidentiality commitment, SLA, RTO, RPO, security addendum, customer security addendum | `customer-trust-soc2` | Is this a customer commitment/audit evidence question rather than a readiness claim? |
+| Federal/defense | FedRAMP, federal cloud, CMMC, DoD, DIB, FCI, CUI, NIST 800-171, NIST 800-53, ITAR, CJIS, FOUO, law enforcement records, export controlled technical data | `federal-defense` | Is the system handling federal cloud authorization, FCI, CUI, or defense supplier obligations? |
+
+## Composite Rules
+
+- If `payments-cardholder` and `sanctions-export` both trigger, prefer `payments-sanctions-export`.
+- If `child-privacy` and `biometric-identity` both trigger, prefer `child-biometric`.
+- If `safety-ot` and `agentic-llm` both trigger, keep both; the catastrophic path is physical action mediated by model/tool authority.
+- If `high-trust-output` triggers for tax, legal, medical, financial, benefits, hiring, housing, or safety advice, browse or read the current official domain authority during the run and record checked date.
+
+## Non-Matches
+
+If no trigger family matches, do not scan every source. Return to the scope gate. Either:
+
+- route to `code-hygiene-compounder` or ordinary review, or
+- ask the user to name the catastrophic failure mode and evidence gate.
+
+Suppression examples: phrases such as "no real PII", "mock PII", "fake data", "privacy policy typo", "DPIA template docs only", "sample Terraform tutorial", "Kubernetes glossary typo", "IAM glossary", "PIM docs only", "Intune docs only", "EDR docs only", "mobile storage docs only", "GraphQL schema docs example only", "without product claims", "without claims", "without repo tokens or customer data", "no production queue", "no model call", "no customer commitment", "without security claims", "fake card", or "no tenant data path" should keep generic UI, docs, setup, unit-test, or mock-data work in the scope gate/code-hygiene path unless another catastrophic vital activates.

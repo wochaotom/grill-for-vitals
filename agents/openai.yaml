@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grill for Vitals"
+  short_description: "Map catastrophic system risk surfaces."
+  default_prompt: "Use grill-for-vitals to inspect this project only for catastrophic vitals, classify each as Red/Amber/Green/Unknown, use source activation presets or current official domain sources when standards matter, treat vendor references as leads not proof, and route generic code-hygiene issues as handoffs."
