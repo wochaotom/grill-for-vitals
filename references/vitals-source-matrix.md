@@ -21,4 +21,4 @@ Use this matrix to keep the skill specialized. It maps each vital to likely sour
 
 - Prefer local evidence before source activation.
 - Use source presets to pick questions, not to produce compliance labels.
-- If a finding does not map to a row, it is probably a code-hygiene handoff unless the user names a catastrophic failure mode.
+- If a finding does not map to a row, it is probably a out-of-scope handoff unless the user names a catastrophic failure mode.

@@ -51,7 +51,7 @@ Bad prompt for this skill:
 Review this helper for naming, readability, and tests.
 ```
 
-That belongs in ordinary code review or a code-hygiene skill unless a catastrophic vital is implicated.
+That belongs in ordinary code review unless a catastrophic vital is implicated.
 
 ## What It Covers
 
@@ -78,8 +78,8 @@ Grill For Vitals runs a narrow loop:
 2. Local sweep: inspect code, docs, configs, tests, logs, and project rules before asking.
 3. Source routing: use `scripts/source_activation_plan.py --surface "<surface>"` to activate only the relevant source family.
 4. Evidence gate: classify each vital as `Red`, `Amber`, `Green`, or `Unknown`.
-5. One question: ask the next highest-leverage unresolved question with a recommended answer and evidence needed.
-6. Report: separate evidence from inference, list hard stops, unknowns, sources used, and code-hygiene handoffs.
+5. Grill in rounds: ask every question that can be settled now, numbered, each with a recommended answer and the evidence that would settle it; look up facts instead of asking.
+6. Report: separate evidence from inference, list hard stops, unknowns, sources used, and out-of-scope handoffs.
 
 It is intentionally conditional. It should not scan every security, privacy, AI, or compliance source for every task.
 
@@ -110,7 +110,6 @@ python scripts/validate_grill_skill.py .
 python scripts/source_activation_plan.py --self-test
 python scripts/calibrate_source_taxonomy.py
 python scripts/check_source_links.py
-python scripts/check_code_hygiene_overlap.py
 python scripts/validator_smoke_tests.py
 ```
 
@@ -190,7 +189,7 @@ Grill For Vitals does not:
 - mark missing evidence safe
 - treat vendor scanner output as proof by itself
 
-If no catastrophic vital is present, the correct move is to stop and hand off to ordinary review or code hygiene.
+If no catastrophic vital is present, the correct move is to stop and hand off to ordinary code review.
 
 ## License
 

@@ -1,6 +1,6 @@
 # Question Bank
 
-Ask one question at a time. Prefer the highest-risk unresolved `Red` or `Unknown`.
+Draw each round's questions from here (see SKILL.md step 6). Ask the frontier in rounds, highest-risk unresolved `Red` or `Unknown` first, and number each question.
 
 ## Contents
 
@@ -32,7 +32,7 @@ Why this matters: <catastrophic failure mode>
 Question: Which catastrophic vital is actually implicated here?
 Recommended answer: Continue only if the task touches a vital such as secrets, PII, auth/tenancy, money, irreversible mutation, external effects, agent authority, privileged deploy, file ingress, logs/audit, high-trust outputs, or runaway cost.
 Evidence needed: A named vital, catastrophic failure mode, and evidence gate.
-Why this matters: Without this gate, the skill drifts into generic code review and duplicates code hygiene.
+Why this matters: Without this gate, the skill drifts into generic code review and duplicates ordinary code review.
 
 ## Secrets And Control Plane
 

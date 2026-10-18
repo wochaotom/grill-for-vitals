@@ -15,7 +15,7 @@ Use this shape for checkpoint or final reports.
 - Evidence Inspected
 - Source Basis
 - Inferences
-- Code-Hygiene Handoffs
+- Out-of-Scope Handoffs
 - Next Verification
 - Non-Claims
 
@@ -36,7 +36,7 @@ Use this shape for checkpoint or final reports.
 Candidate vital:
 Catastrophic failure mode:
 Evidence gate:
-Scope decision: <Grill / code-hygiene handoff / ordinary review>
+Scope decision: <Grill / out-of-scope handoff / ordinary code review>
 ```
 
 ### Summary
@@ -75,7 +75,7 @@ List unresolved questions. Unknowns should be concrete and answerable.
 
 ### Questions For User
 
-Ask one question at a time in conversation. If writing a report, include the backlog:
+In conversation, ask the open frontier in numbered rounds (SKILL.md step 6). If writing a report, include the remaining questions:
 
 ```text
 Question:
@@ -104,7 +104,7 @@ Limitations: <draft/concept/provisional/vendor/not a compliance audit/etc.>
 
 Separate inferred architecture or risks from direct evidence.
 
-### Code-Hygiene Handoffs
+### Out-of-Scope Handoffs
 
 List non-vital findings only as handoffs. Do not let them become the Grill report.
 

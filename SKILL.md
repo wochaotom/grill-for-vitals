@@ -1,6 +1,6 @@
 ---
 name: grill-for-vitals
-description: "Use when an agent must map catastrophic high-risk system surfaces before design, implementation, launch, security review, or automation: secrets/control plane, PII, auth/tenancy, money/payments/trading/procurement, irreversible writes, external sends/physical actions, agent tools/MCP/browser/shell, CI/CD, logs/audit, high-trust outputs, or runaway cost. Do not use for ordinary code review, refactors, style, tests, maintainability or generic hardening unless a catastrophic vital is implicated."
+description: "Maps the catastrophic failure paths in a system and grills the user on them in rounds, backed by code evidence: secrets/control plane, PII, auth/tenancy, money/payments/trading/procurement, irreversible writes, external sends/physical actions, agent tools/MCP/browser/shell, CI/CD, logs/audit, high-trust outputs, and runaway cost. Use before design, implementation, launch, security review, or automation that touches any of these. Do not use for ordinary code review, refactors, style, tests, maintainability or generic hardening unless a catastrophic vital is implicated."
 ---
 
 # Grill For Vitals
@@ -9,35 +9,47 @@ Use this skill to find the parts of a system where compromise, misuse, or bad au
 
 ## Core Rules
 
-1. Run the scope gate first. If no catastrophic vital is implicated, stop and route the task to ordinary review or `code-hygiene-compounder`.
+1. Run the scope gate first. If no catastrophic vital is implicated, stop and route the task to ordinary code review.
 2. Inspect code, docs, configs, and existing project rules before asking the user.
 3. If the answer can be discovered locally, discover it instead of asking.
 4. Classify each vital as `Red`, `Amber`, `Green`, or `Unknown`; never downgrade missing evidence to safe.
-5. Ask one question at a time when evidence is missing or a tradeoff needs a human decision.
-6. For every question, provide your recommended answer and the evidence that would prove it.
+5. Facts are your job; decisions are the user's. Look up anything the code, config, docs, or a sub-agent can answer, and only ask the user for risk decisions and facts that exist nowhere you can read.
+6. Grill in rounds (step 6): every question gets a recommended answer, the evidence that would prove it, and the catastrophic failure mode it guards against.
 7. Separate evidence from inference. Say plainly when a claim is inferred.
 8. Use authoritative sources only for activated vitals; do not load broad code-quality sources here.
 9. Do not claim compliance, readiness, or safety unless the required evidence was inspected in this run.
 
 ## Reference Loading
 
-Load only the references needed for the current task:
+Load only what the current step needs. Every path below is under `references/`.
 
-- `references/catastrophe-taxonomy.md`: vital categories and Red/Amber/Green/Unknown rules.
-- `references/evidence-gates.md`: what proof is required for each high-risk area.
-- `references/vital-principles.md`: distilled source-backed principles for everyday Grill runs.
-- `references/scope-boundary.md`: scope gate, code-hygiene handoff rules, and examples.
-- `references/question-bank.md`: one-at-a-time grill questions by vital.
-- `references/anti-overexpansion-query-protocol.md`: how to use `aquery` and `bquery` without graph or retrieval overflow becoming fake authority.
-- `references/source-trigger-taxonomy.md`: surface-signal taxonomy for choosing presets before reading the wider source registry.
-- `references/source-registry.md`: authoritative source tiers, freshness rules, and conditional source activation.
-- `references/source-weights.json`: source activation weights for high-risk domains.
-- `references/vitals-source-matrix.md`: vital-to-source-preset and evidence-gate map.
-- `references/vendor-ai-reviewer-patterns.md`: Greptile/CodeRabbit-inspired AI code-review security patterns; use as vendor/practitioner input only.
-- `references/pressure-scenarios.md`: validation prompts for skill iteration; do not load during normal Grill runs.
-- `references/behavioral-evaluation-protocol.md`: baseline/candidate promotion protocol for skill iteration; do not load during normal Grill runs.
-- `references/source-map.md`: local-vault and historical lineage, not the active source registry.
-- `references/report-template.md`: output shape for Vitals reports.
+Core, for most runs:
+
+- `scope-boundary.md`: scope gate, out-of-scope handoff rules, and examples.
+- `catastrophe-taxonomy.md`: vital categories and Red/Amber/Green/Unknown rules.
+- `evidence-gates.md`: what proof is required for each high-risk area.
+- `question-bank.md`: grill questions by vital, to draw each round from.
+- `report-template.md`: output shape for Vitals reports.
+- `vital-principles.md`: distilled source-backed principles for everyday Grill runs.
+
+Sources, only after a vital activates them:
+
+- `source-trigger-taxonomy.md`: surface-signal taxonomy for choosing presets before reading the wider source registry.
+- `source-registry.md`: authoritative source tiers, freshness rules, and conditional source activation.
+- `source-weights.json`: source activation weights for high-risk domains.
+- `vitals-source-matrix.md`: vital-to-source-preset and evidence-gate map.
+- `vendor-ai-reviewer-patterns.md`: Greptile/CodeRabbit-inspired AI code-review security patterns; use as vendor/practitioner input only.
+
+Situational:
+
+- `vault-research.md`: only when the user asks for vault research or the context depends on their Obsidian vault doctrine.
+- `anti-overexpansion-query-protocol.md`: how to use `aquery` and `bquery` without graph or retrieval overflow becoming fake authority.
+
+Skill development only; never load during a normal Grill run:
+
+- `pressure-scenarios.md`: validation prompts for skill iteration.
+- `behavioral-evaluation-protocol.md`: baseline/candidate promotion protocol for skill iteration.
+- `source-map.md`: design lineage, not the active source registry.
 
 When multiple sources may apply, run `scripts/source_activation_plan.py --surface "<observed problem surface>"` or inspect `source-trigger-taxonomy.md`, then choose a matching preset such as `identity-auth`, `control-plane-supply-chain`, `privacy-customer-content`, `financial-customer-data`, `ai-review-toolchain`, `high-trust-output`, `agentic-llm`, `health-ephi`, `child-privacy`, `biometric-identity`, `child-biometric`, `payments-cardholder`, `sanctions-export`, `customer-trust-soc2`, `incident-recovery`, `safety-ot`, `cost-availability`, `payments-sanctions-export`, or `federal-defense`; do not load broad source packs by default.
 
@@ -53,11 +65,11 @@ Out of scope examples:
 - generic "make this safer" work with no vital surface
 - performance or architecture issues unless they create runaway cost, outage, data exposure, or irreversible mutation
 
-If a generic hygiene issue appears while mapping a vital, record it as a handoff and return to the vital.
+If an ordinary code-quality issue appears while mapping a vital, record it as an out-of-scope handoff and return to the vital.
 
 ### 1. Context Sweep
 
-Start with a local sweep. Prefer `rg --files` and targeted `rg` searches. Check, when present:
+Start with a local sweep. Prefer `rg --files` and targeted `rg` searches. For a large codebase, hand independent areas to parallel sub-agents and keep only their findings. Check, when present:
 
 - project rules: `AGENTS.md`, `CLAUDE.md`, `CONTEXT.md`, `docs/adr/`
 - env and secret surfaces: `.env*`, `.npmrc`, `.pypirc`, `.netrc`, kubeconfig, service-account files, secret examples, CI secrets references
@@ -102,18 +114,32 @@ Use `evidence-gates.md` to decide whether a control is proven. Prefer direct art
 
 Use `source-trigger-taxonomy.md` first to map observed surface signals to presets. Then use `source-registry.md` and `source-weights.json` only after a vital activates them. Prefer primary official sources for current claims. Label drafts, concepts, proposals, local vault notes, academic papers, and vendor writing as weaker evidence. Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, tax, or safety compliance from this skill.
 
-### 6. Grill One Question At A Time
+### 6. Grill In Rounds
 
-Ask only the next highest-leverage unresolved question. Phrase it as:
+Treat the open risk decisions as a tree: settling one decision opens the decisions that depend on it. The **frontier** is every open decision whose prerequisites are already settled.
+
+Each round, ask the whole frontier at once, highest risk first (`Red` and `Unknown` before `Amber`). Keep a round to about five questions; if the frontier is larger, ask the riskiest five and hold the rest for the next round. Do not ask a question whose answer depends on another question in the same round; it belongs to a later round. Draw wording from `question-bank.md`.
+
+Format each round like this:
 
 ```text
-Question: <one concrete risk decision>
+Round <n>
+
+Q1. <one concrete risk decision>
 Recommended answer: <your recommendation>
 Evidence needed: <what would prove it>
 Why this matters: <catastrophic failure mode>
+
+Q2. ...
+
+Reply "yes" to accept every recommendation, or answer by number.
 ```
 
-If the user answers, update the Vitals Map and continue. If the answer contradicts code evidence, say so and name the contradiction.
+Word each question so that "yes" accepts your recommended answer.
+
+When a frontier question needs a fact rather than a decision, find the fact yourself (read the code, run a search, or dispatch a sub-agent) instead of asking. Do not block the round on it: ask the rest of the frontier now and hold back only the questions that depend on the pending fact.
+
+After each round, update the Vitals Map and statuses, recompute the frontier, and ask the next round. If an answer contradicts code evidence, say so and name the contradiction. The grilling is done when the frontier is empty: every vital is classified, and every hard stop has an owner and a fix or an explicit acceptance. Do not act on the map until the user confirms it.
 
 ### 7. Report
 
@@ -126,7 +152,7 @@ Use `report-template.md` for final or checkpoint reports. Always include:
 - evidence inspected
 - evidence still needed
 - activated sources and checked dates when standards are used
-- out-of-scope handoffs for `code-hygiene-compounder`
+- out-of-scope handoffs for ordinary code review
 - next verification steps
 
 ## Hard Stops
@@ -145,14 +171,8 @@ Escalate as `Red` until fixed or explicitly accepted:
 
 ## Vault Research
 
-Use vault research only when the user asks for it or when local context clearly requires the user's vault doctrine. Follow the relevant skill rules exactly.
-
-- Academic: use `aquery`/Academic retrieval rules. By default, do not consult Academic Graphify. If the user explicitly changes that policy in the current turn, use Academic Graphify only as a navigation map to find candidate notes or terms, never as evidence or coverage.
-- Business: use `bquery`/Business retrieval rules. Business Graphify is retired; use `QUERY-ENTRY.md` and query packs only as routing hints, then verify against deterministic retrieval receipts and durable notes read directly in this run.
-- Any overflowed retrieval is navigation only unless the full candidate set is read through the required process.
-
-Use `anti-overexpansion-query-protocol.md` before making vault-grounded claims.
+Only when the user asks for vault research, or local context clearly depends on their vault doctrine, load `vault-research.md` and follow it exactly.
 
 ## Skill Iteration Checks
 
-When editing this skill, run `quick_validate.py`, `scripts/validate_grill_skill.py`, `scripts/source_activation_plan.py --self-test`, `scripts/calibrate_source_taxonomy.py` (GFV-100 plus regression cases), a representative `scripts/source_activation_plan.py --surface "<surface>"` check, `scripts/check_source_links.py`, `scripts/check_code_hygiene_overlap.py`, and `scripts/validator_smoke_tests.py` before claiming the edit is sound. For behavior-changing edits, follow `behavioral-evaluation-protocol.md` and compare matched receipts with `scripts/evaluate_behavioral_runs.py`; static validation is not a behavioral promotion result. If making version-specific or high-stakes standards claims, also run `scripts/check_source_links.py --online` or browse the cited primary sources during the run.
+When editing this skill, run `quick_validate.py`, `scripts/validate_grill_skill.py`, `scripts/source_activation_plan.py --self-test`, `scripts/calibrate_source_taxonomy.py` (GFV-100 plus regression cases), a representative `scripts/source_activation_plan.py --surface "<surface>"` check, `scripts/check_source_links.py`, and `scripts/validator_smoke_tests.py` before claiming the edit is sound. For behavior-changing edits, follow `behavioral-evaluation-protocol.md` and compare matched receipts with `scripts/evaluate_behavioral_runs.py`; static validation is not a behavioral promotion result. If making version-specific or high-stakes standards claims, also run `scripts/check_source_links.py --online` or browse the cited primary sources during the run.

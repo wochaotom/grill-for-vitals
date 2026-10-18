@@ -50,7 +50,7 @@ If the surface is ambiguous, ask the one question in the table before activating
 
 If no trigger family matches, do not scan every source. Return to the scope gate. Either:
 
-- route to `code-hygiene-compounder` or ordinary review, or
+- route to ordinary code review, or
 - ask the user to name the catastrophic failure mode and evidence gate.
 
 Suppression examples: phrases such as "no real PII", "mock PII", "fake data", "privacy policy typo", "DPIA template docs only", "sample Terraform tutorial", "Kubernetes glossary typo", "IAM glossary", "PIM docs only", "Intune docs only", "EDR docs only", "mobile storage docs only", "GraphQL schema docs example only", "without product claims", "without claims", "without repo tokens or customer data", "no production queue", "no model call", "no customer commitment", "without security claims", "fake card", or "no tenant data path" should keep generic UI, docs, setup, unit-test, or mock-data work in the scope gate/code-hygiene path unless another catastrophic vital activates.

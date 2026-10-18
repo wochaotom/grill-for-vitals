@@ -4,7 +4,7 @@
   "policy": {
     "authoritative_first": true,
     "verify_current_before_version_claims": true,
-    "reject_generic_code_hygiene_sources": true,
+    "reject_generic_code_quality_sources": true,
     "unknown_is_not_safe": true
   },
   "weights": [

@@ -4,10 +4,10 @@ Use this file to remember where the skill's rules came from. Do not load this un
 
 ## Local Skill Lineage
 
-- `grill-me`: one question at a time; inspect code if code can answer.
+- `grill-me`: original one-question-at-a-time interview; inspect code if code can answer.
+- `grilling` (Matt Pocock): rounds over the decision frontier, a recommended answer per question, facts looked up by sub-agents instead of asked.
 - `grill-with-docs`: challenge against existing domain language and docs; update docs only when approved and useful.
 - Superpowers `brainstorming`: design before implementation; do not scaffold before approval.
-- Great Code Hygiene: evidence-first reporting, smallest viable change, verification before completion, source packs outside the main skill body.
 - Karpathy `autoresearch`: bounded loop, fixed metric, keep/discard, simplicity criterion.
 - Udit `autoresearch`: bounded default iteration, security mode, structured reports.
 - AutoResearchClaw: human-in-the-loop gates for high-impact stages.

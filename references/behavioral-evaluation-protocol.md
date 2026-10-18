@@ -96,7 +96,7 @@ Inspect the actual transcript and result values. A zero exit code, generated sch
 
 A reviewer who did not produce the response scores the judgment-bearing checks:
 
-- scope gate and code-hygiene handoff
+- scope gate and out-of-scope handoff
 - selected vital and catastrophic path
 - source routing and authority order
 - required evidence and status

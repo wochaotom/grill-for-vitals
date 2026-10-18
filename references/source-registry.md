@@ -28,7 +28,7 @@ Use this registry only after a vital activates source-grounded questioning or re
 - Prefer final current standards over drafts or concept notes. Use drafts/concepts only when that status itself matters, and label them `draft`, `initial public draft`, or `concept`.
 - Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, or safety compliance from this skill.
 - Use vault material only as local doctrine or system context unless the full note set was read through the applicable query protocol.
-- Reject style, readability, generic testing, and maintainability sources here; those belong to `code-hygiene-compounder`.
+- Reject style, readability, generic testing, and maintainability sources here; those belong to ordinary code review.
 
 ## Activation Registry
 
@@ -134,7 +134,7 @@ Use this registry only after a vital activates source-grounded questioning or re
 - Add sources only when they improve a high-risk vital, evidence gate, or authoritative currentness.
 - Prefer primary sources from official maintainers; quarantine vendor checklists until they add a concrete emerging threat or verifier.
 - Keep long source text out of `SKILL.md`; add links and distilled activation rules here.
-- If a source mainly teaches general coding hygiene, style, ordinary testing, or maintainability, reject it for this skill and route to `code-hygiene-compounder`.
+- If a source mainly teaches general coding hygiene, style, ordinary testing, or maintainability, reject it for this skill and route to ordinary code review.
 - Vendor AI-reviewer references are Tier D. Use them to generate questions for AI reviewer/toolchain vitals, then verify against local config, contracts, logs, and official standards.
 - Pair Tier D vendor/practitioner sources with Tier A/B sources unless the question is purely vendor configuration.
 - Do not preload every possible legal, medical, financial, tax, benefits, hiring, housing, or safety authority. For high-trust domain advice, browse or read the current official domain source during the run and record its checked date.
@@ -146,9 +146,9 @@ These may be useful elsewhere, but they are not part of Grill's active corpus un
 
 | Source family | Default routing | Why not active here |
 |---|---|---|
-| Google Engineering Practices, Testing Blog, style guides | `code-hygiene-compounder` | Broad code review, testing, readability, and maintainability. |
-| Python docs, packaging/testing docs, language style guides | `code-hygiene-compounder` | Language hygiene unless a specific vital path depends on language/runtime behavior. |
-| WCAG/accessibility guidance | `code-hygiene-compounder` or product review | Important, but usually not catastrophic-system-vital evidence unless tied to high-trust or destructive-action harm. |
-| OpenTelemetry/logging design guides | `code-hygiene-compounder` | Observability hygiene unless evidence-plane integrity or sensitive-log leakage is the vital. |
+| Google Engineering Practices, Testing Blog, style guides | Ordinary code review | Broad code review, testing, readability, and maintainability. |
+| Python docs, packaging/testing docs, language style guides | Ordinary code review | Language hygiene unless a specific vital path depends on language/runtime behavior. |
+| WCAG/accessibility guidance | Ordinary code review or product review | Important, but usually not catastrophic-system-vital evidence unless tied to high-trust or destructive-action harm. |
+| OpenTelemetry/logging design guides | Ordinary code review | Observability hygiene unless evidence-plane integrity or sensitive-log leakage is the vital. |
 | SLSA/OpenSSF Scorecard | Consider only after NIST SSDF/CISA are insufficient | Useful for supply-chain depth, but defaulting to them risks duplicating broad repo-security hygiene. |
-| General AI code-review checklists | Reject or route to Code Hygiene | They pull toward generic PR review rather than catastrophic surface mapping. |
+| General AI code-review checklists | Reject or route to ordinary code review | They pull toward generic PR review rather than catastrophic surface mapping. |

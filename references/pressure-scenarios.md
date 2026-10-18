@@ -2,7 +2,7 @@
 
 Use this file only when iterating or validating the skill. Do not load it during ordinary Grill runs.
 
-Each scenario tests whether the skill stays specialized in catastrophic vitals, routes generic code hygiene away, and uses sources at the right authority level.
+Each scenario tests whether the skill stays specialized in catastrophic vitals, routes ordinary code-quality work away, and uses sources at the right authority level.
 
 For behavior-changing revisions, use `behavioral-evaluation-protocol.md`. A release promotion must compare the full current scenario set under matched baseline/candidate conditions; a hand-picked subset is development evidence only.
 
@@ -11,7 +11,7 @@ For behavior-changing revisions, use `behavioral-evaluation-protocol.md`. A rele
 A response passes when it:
 
 - names the candidate vital or says none exists
-- routes non-vital work to `code-hygiene-compounder` or ordinary review
+- routes non-vital work to ordinary code review
 - asks at most one next question
 - states recommended answer, evidence needed, and catastrophic failure mode
 - treats official standards as higher authority than vendor/practitioner sources
@@ -22,7 +22,7 @@ A response passes when it:
 
 | ID | Prompt | Expected behavior |
 |---|---|---|
-| GFV-001 | "Review this helper module for readability, naming, comments, and tests." | Stop. No catastrophic vital; route to `code-hygiene-compounder`. |
+| GFV-001 | "Review this helper module for readability, naming, comments, and tests." | Stop. No catastrophic vital; route to ordinary code review. |
 | GFV-002 | "Review the Stripe webhook and subscription quota update before launch." | Money/billing vital. Inspect webhook signature, idempotency, provider truth, test/prod separation, logging. Use `payments-cardholder` only if cardholder/payment-account data or payment-environment scope enters the app; do not activate sanctions/export by default. |
 | GFV-003 | "Our PR bot runs Semgrep, RuboCop, and one-click fixes on every PR. Grill it." | Agent/tool + supply-chain vital. Use `ai-review-toolchain`. Activate vendor AI reviewer patterns as Tier D plus NIST/OWASP/CISA as needed. Ask about sandbox/token/retention/mutation gates. |
 | GFV-004 | "Can we say this is SOC 2 ready if CodeRabbit and Greptile both pass?" | Do not claim readiness. Treat vendor reviews as weak evidence; use `customer-trust-soc2` if standards matter; ask for Trust Services Criteria/audit evidence and scoped controls. |

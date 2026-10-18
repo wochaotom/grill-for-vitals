@@ -33,7 +33,6 @@ REQUIRED_SCRIPTS = [
     "scripts/source_activation_plan.py",
     "scripts/calibrate_source_taxonomy.py",
     "scripts/check_source_links.py",
-    "scripts/check_code_hygiene_overlap.py",
     "scripts/evaluate_behavioral_runs.py",
     "scripts/validator_smoke_tests.py",
 ]
@@ -41,7 +40,7 @@ REQUIRED_SCRIPTS = [
 SKILL_REQUIRED_PHRASES = [
     "Do not use for ordinary code review",
     "Run the scope gate first",
-    "code-hygiene-compounder",
+    "ordinary code review",
     "source-registry.md",
     "source-trigger-taxonomy.md",
     "source-weights.json",
@@ -53,7 +52,6 @@ SKILL_REQUIRED_PHRASES = [
     "Skill Iteration Checks",
     "calibrate_source_taxonomy.py",
     "check_source_links.py",
-    "check_code_hygiene_overlap.py",
     "evaluate_behavioral_runs.py",
     "validator_smoke_tests.py",
     "catastrophic vital",
@@ -87,7 +85,7 @@ PRESSURE_REQUIRED_PHRASES = [
     "GFV-018",
     "GFV-019",
     "GFV-020",
-    "code-hygiene-compounder",
+    "ordinary code review",
     "vendor/practitioner",
     "safety-critical",
     "source_activation_plan.py",
@@ -205,7 +203,7 @@ VITALS_SOURCE_MATRIX_REQUIRED_PHRASES = [
     "Identity/auth/sessions/tenancy",
     "Agent/tool/MCP/browser/shell",
     "High-trust outputs",
-    "code-hygiene handoff",
+    "out-of-scope handoff",
 ]
 
 EXPECTED_MATRIX_VITALS = [
@@ -227,9 +225,9 @@ SCOPE_REQUIRED_PHRASES = [
     "## Entry Test",
     "## Out Of Scope",
     "## Handoff Rule",
-    "## Code Hygiene Overlap Rule",
+    "## Overlap Rule",
     "## Stop Rule",
-    "code-hygiene-compounder",
+    "ordinary code review",
 ]
 
 REPORT_REQUIRED_PHRASES = [
@@ -237,7 +235,7 @@ REPORT_REQUIRED_PHRASES = [
     "### Scope Gate",
     "Candidate vital:",
     "### Source Basis",
-    "### Code-Hygiene Handoffs",
+    "### Out-of-Scope Handoffs",
 ]
 
 BANNED_ALWAYS_SOURCES = {
@@ -335,7 +333,7 @@ def validate_question_bank(root: Path, errors: list[str]) -> None:
     text = path.read_text(encoding="utf-8")
     inline_text = re.sub(r"```.*?```", "", text, flags=re.S)
     allowed_presets = set(SOURCE_PLANNER_REQUIRED_PHRASES) - SOURCE_PLANNER_NON_PRESET_PHRASES
-    allowed_tokens = allowed_presets | {"Red", "Amber", "Green", "Unknown", "code-hygiene-compounder"}
+    allowed_tokens = allowed_presets | {"Red", "Amber", "Green", "Unknown"}
     for token in re.findall(r"`([^`]+)`", inline_text):
         if token not in allowed_tokens:
             fail(errors, f"question-bank.md references unknown token: {token}")
@@ -363,7 +361,7 @@ def validate_pressure_scenarios(root: Path, errors: list[str]) -> None:
         fail(errors, "pressure-scenarios.md GFV IDs must be sequential from GFV-001")
 
     required_markers = {
-        "generic handoff": "route to `code-hygiene-compounder`",
+        "generic handoff": "route to ordinary code review",
         "AI review preset": "Use `ai-review-toolchain`",
         "high trust output preset": "Use `high-trust-output`",
         "control plane preset": "Use `control-plane-supply-chain`",
@@ -419,7 +417,6 @@ def validate_pressure_backticks(root: Path, errors: list[str], source_ids: set[s
     allowed = source_ids | allowed_presets | {
         "--surface",
         "behavioral-evaluation-protocol.md",
-        "code-hygiene-compounder",
         "source_activation_plan.py",
     }
     for token in re.findall(r"`([^`]+)`", text):
@@ -437,7 +434,6 @@ def validate_source_trigger_taxonomy(root: Path, errors: list[str]) -> None:
 
     allowed_presets = set(SOURCE_PLANNER_REQUIRED_PHRASES) - SOURCE_PLANNER_NON_PRESET_PHRASES
     allowed = allowed_presets | {
-        "code-hygiene-compounder",
         "source-registry.md",
     }
     for token in re.findall(r"`([^`]+)`", inline_text):
@@ -571,7 +567,7 @@ def main() -> int:
         source_id = entry.get("id", "")
         activation = str(entry.get("activation", "")).lower()
         if source_id in BANNED_ALWAYS_SOURCES:
-            fail(errors, f"Generic code-hygiene source is not allowed: {source_id}")
+            fail(errors, f"Generic code-quality source is not allowed: {source_id}")
         if activation in BANNED_ACTIVATIONS:
             fail(errors, f"Non-vital activation is not allowed for {source_id}: {activation}")
         if not activation:

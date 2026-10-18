@@ -10,7 +10,7 @@ Proceed only when all three can be named:
 2. Catastrophic failure mode: what breach, misuse, or automation failure would cause severe harm.
 3. Evidence gate: what code, config, test, log, policy, runtime behavior, or source receipt would prove the path controlled.
 
-If the entry test fails, say this is not a Grill for Vitals task and route to ordinary review or `code-hygiene-compounder`.
+If the entry test fails, say this is not a Grill for Vitals task and route to ordinary code review.
 
 ## In Scope
 
@@ -32,7 +32,7 @@ If the entry test fails, say this is not a Grill for Vitals task and route to or
 
 ## Out Of Scope
 
-Route these to `code-hygiene-compounder` or normal engineering review unless they cross an in-scope vital:
+Route these to ordinary code review unless they cross an in-scope vital:
 
 - style, formatting, naming, comments, readability, dead code, or ordinary refactors
 - generic maintainability, modularity, abstraction, architecture, or design cleanliness
@@ -46,14 +46,14 @@ Route these to `code-hygiene-compounder` or normal engineering review unless the
 If a non-vital issue appears during a Grill run:
 
 ```text
-Code-hygiene handoff: <issue>
+Out-of-scope handoff: <issue>
 Why not grilled: <no catastrophic vital / no severe blast radius>
-Suggested owner: code-hygiene-compounder or ordinary review
+Suggested owner: ordinary code review
 ```
 
 Do not keep chasing the handoff. Return to the highest-risk unresolved vital.
 
-## Code Hygiene Overlap Rule
+## Overlap Rule
 
 Allowed overlap:
 
@@ -67,17 +67,17 @@ Not allowed:
 - broad "secure coding" checklists disconnected from a named vital
 - turning the report into a bug list after the Vitals Map is clear
 - using CodeRabbit, Greptile, SAST, or scanner output as proof instead of as leads
-- applying Code Hygiene's feedback-loop/refactor workflow unless the user separately asks for implementation or cleanup
+- running a cleanup or refactor workflow unless the user separately asks for implementation or cleanup
 
 ## Boundary Examples
 
 | Finding | Grill? | Why |
 |---|---|---|
 | Missing route authorization on `/admin/refunds` | Yes | Auth plus money creates catastrophic misuse. |
-| Button label is unclear | No | Usability/code hygiene unless it causes a high-trust or destructive-action mistake. |
-| Unpinned dependency in a dev-only formatter | No | Code hygiene unless it runs with privileged CI/deploy credentials. |
+| Button label is unclear | No | Usability or ordinary review unless it causes a high-trust or destructive-action mistake. |
+| Unpinned dependency in a dev-only formatter | No | Ordinary review unless it runs with privileged CI/deploy credentials. |
 | Unpinned GitHub Action with write token | Yes | Supply chain plus control-plane authority. |
-| No test for a pure date helper | No | Test hygiene. |
+| No test for a pure date helper | No | Ordinary test review. |
 | No negative cross-tenant access test | Yes | Tenant isolation is a vital evidence gate. |
 | Slow endpoint | Usually no | Grill only if it can trigger outage, cost runaway, or rate-limit cascade. |
 | Logs include raw prompts and uploaded files | Yes | PII/customer content plus evidence-plane leakage. |
