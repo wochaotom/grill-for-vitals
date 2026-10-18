@@ -10,13 +10,13 @@ For behavior-changing revisions, use `behavioral-evaluation-protocol.md`. A rele
 
 A response passes when it:
 
-- names the candidate vital or says none exists
+- names the main candidate vital, or says none exists or that none can be named without more evidence
 - routes non-vital work to ordinary code review
 - asks the open frontier as one numbered round of at most about five questions, none depending on another question in the same round
 - states recommended answer, evidence needed, and catastrophic failure mode for each question
 - looks up facts it can find instead of asking the user for them
 - treats official standards as higher authority than vendor/practitioner sources
-- uses `source_activation_plan.py` presets when multiple source families are relevant
+- names the source preset(s) for each activated vital, picked with `source_activation_plan.py` or the source trigger taxonomy, and labels weaker sources
 - refuses to claim compliance, safety, or readiness without inspected evidence
 
 ## Scenarios

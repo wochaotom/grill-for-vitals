@@ -51,7 +51,7 @@ Skill development only; never load during a normal Grill run:
 - `behavioral-evaluation-protocol.md`: baseline/candidate promotion protocol for skill iteration.
 - `source-map.md`: design lineage, not the active source registry.
 
-When multiple sources may apply, run `scripts/source_activation_plan.py --surface "<observed problem surface>"` or inspect `source-trigger-taxonomy.md`, then choose a matching preset such as `identity-auth`, `control-plane-supply-chain`, `privacy-customer-content`, `financial-customer-data`, `ai-review-toolchain`, `high-trust-output`, `agentic-llm`, `health-ephi`, `child-privacy`, `biometric-identity`, `child-biometric`, `payments-cardholder`, `sanctions-export`, `customer-trust-soc2`, `incident-recovery`, `safety-ot`, `cost-availability`, `payments-sanctions-export`, or `federal-defense`; do not load broad source packs by default.
+Once a vital activates, pick its source preset(s): run `scripts/source_activation_plan.py --surface "<observed problem surface>"`, or, if you cannot run scripts, look the surface up in `source-trigger-taxonomy.md`. Choose a matching preset such as `identity-auth`, `control-plane-supply-chain`, `privacy-customer-content`, `financial-customer-data`, `ai-review-toolchain`, `high-trust-output`, `agentic-llm`, `health-ephi`, `child-privacy`, `biometric-identity`, `child-biometric`, `payments-cardholder`, `sanctions-export`, `customer-trust-soc2`, `incident-recovery`, `safety-ot`, `cost-availability`, `payments-sanctions-export`, or `federal-defense`; do not load broad source packs by default.
 
 ## Workflow
 
@@ -112,7 +112,7 @@ Use `evidence-gates.md` to decide whether a control is proven. Prefer direct art
 
 ### 5. Activate Sources
 
-Use `source-trigger-taxonomy.md` first to map observed surface signals to presets. Then use `source-registry.md` and `source-weights.json` only after a vital activates them. Prefer primary official sources for current claims. Label drafts, concepts, proposals, local vault notes, academic papers, and vendor writing as weaker evidence. Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, tax, or safety compliance from this skill.
+Every activated vital gets at least one preset, picked as described under Reference Loading. Name the presets in each round's `Sources:` line (step 6). Then use `source-registry.md` and `source-weights.json` only after a vital activates them. Prefer primary official sources for current claims. Label drafts, concepts, proposals, local vault notes, academic papers, and vendor writing as weaker evidence. Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, tax, or safety compliance from this skill.
 
 ### 6. Grill In Rounds
 
@@ -124,6 +124,8 @@ Format each round like this:
 
 ```text
 Round <n>
+Main risk: <the one vital that would hurt most, with its Red/Amber/Unknown status>
+Sources: <preset(s) in use; official sources first, weaker ones labelled draft, concept, vendor, or local>
 
 Q1. <one concrete risk decision>
 Recommended answer: <your recommendation>
@@ -134,6 +136,8 @@ Q2. ...
 
 Reply "yes" to accept every recommendation, or answer by number.
 ```
+
+Lead with the main risk: when several vitals apply, pick the one whose failure would do the most harm (for example, high-trust advice that operators act on outranks the tool path that carries it out), and put it first.
 
 Word each question so that "yes" accepts your recommended answer.
 

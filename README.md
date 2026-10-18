@@ -78,7 +78,7 @@ Grill For Vitals runs a narrow loop:
 2. Local sweep: inspect code, docs, configs, tests, logs, and project rules before asking.
 3. Source routing: use `scripts/source_activation_plan.py --surface "<surface>"` to activate only the relevant source family.
 4. Evidence gate: classify each vital as `Red`, `Amber`, `Green`, or `Unknown`.
-5. Grill in rounds: ask every question that can be settled now, numbered, each with a recommended answer and the evidence that would settle it; look up facts instead of asking.
+5. Grill in rounds: open each round with the main risk and the sources in use, then ask every question that can be settled now, numbered, each with a recommended answer and the evidence that would settle it; look up facts instead of asking.
 6. Report: separate evidence from inference, list hard stops, unknowns, sources used, and out-of-scope handoffs.
 
 It is intentionally conditional. It should not scan every security, privacy, AI, or compliance source for every task.
