@@ -23,15 +23,18 @@ REQUIRED_REFERENCES = [
     "references/vitals-source-matrix.md",
     "references/vendor-ai-reviewer-patterns.md",
     "references/pressure-scenarios.md",
+    "references/behavioral-evaluation-protocol.md",
     "references/source-map.md",
     "references/report-template.md",
 ]
 
 REQUIRED_SCRIPTS = [
+    "quick_validate.py",
     "scripts/source_activation_plan.py",
     "scripts/calibrate_source_taxonomy.py",
     "scripts/check_source_links.py",
     "scripts/check_code_hygiene_overlap.py",
+    "scripts/evaluate_behavioral_runs.py",
     "scripts/validator_smoke_tests.py",
 ]
 
@@ -45,11 +48,13 @@ SKILL_REQUIRED_PHRASES = [
     "vitals-source-matrix.md",
     "vendor-ai-reviewer-patterns.md",
     "pressure-scenarios.md",
+    "behavioral-evaluation-protocol.md",
     "vital-principles.md",
     "Skill Iteration Checks",
     "calibrate_source_taxonomy.py",
     "check_source_links.py",
     "check_code_hygiene_overlap.py",
+    "evaluate_behavioral_runs.py",
     "validator_smoke_tests.py",
     "catastrophic vital",
 ]
@@ -89,6 +94,18 @@ PRESSURE_REQUIRED_PHRASES = [
     "Common Failure Modes To Catch",
 ]
 
+BEHAVIOR_PROTOCOL_REQUIRED_PHRASES = [
+    "## Measurement Objective",
+    "## Baseline and candidate parity",
+    "## Development, Regression, And Holdout Cases",
+    "## Deterministic Checks",
+    "## Independent Expert Checks",
+    "## Hard Failures",
+    "evaluate_behavioral_runs.py",
+    "does not generate or judge responses",
+    "not a safety certificate",
+]
+
 SOURCE_PLANNER_REQUIRED_PHRASES = [
     "--self-test",
     "--surface",
@@ -100,6 +117,7 @@ SOURCE_PLANNER_REQUIRED_PHRASES = [
     "ai-review-toolchain",
     "high-trust-output",
     "agentic-llm",
+    "mcp-tooling",
     "identity-auth",
     "control-plane-supply-chain",
     "privacy-customer-content",
@@ -163,9 +181,11 @@ SOURCE_TRIGGER_REQUIRED_PHRASES = [
     "payments-sanctions-export",
     "child-biometric",
     "source_activation_plan.py --surface",
+    "mcp-tooling",
     "do not scan every source",
     "MFA reset",
     "short-lived GitHub token",
+    "pay APIs",
     "no production queue",
     "no model call",
     "no customer commitment",
@@ -396,7 +416,12 @@ def validate_pressure_backticks(root: Path, errors: list[str], source_ids: set[s
     path = root / "references" / "pressure-scenarios.md"
     text = path.read_text(encoding="utf-8")
     allowed_presets = set(SOURCE_PLANNER_REQUIRED_PHRASES) - SOURCE_PLANNER_NON_PRESET_PHRASES
-    allowed = source_ids | allowed_presets | {"code-hygiene-compounder", "source_activation_plan.py", "--surface"}
+    allowed = source_ids | allowed_presets | {
+        "--surface",
+        "behavioral-evaluation-protocol.md",
+        "code-hygiene-compounder",
+        "source_activation_plan.py",
+    }
     for token in re.findall(r"`([^`]+)`", text):
         if token not in allowed:
             fail(errors, f"pressure-scenarios.md references unknown source, preset, or skill: {token}")
@@ -482,6 +507,12 @@ def main() -> int:
         if phrase not in pressure:
             fail(errors, f"pressure-scenarios.md missing required phrase: {phrase}")
     validate_pressure_scenarios(root, errors)
+
+    behavior_protocol = read(root / "references" / "behavioral-evaluation-protocol.md")
+    for phrase in BEHAVIOR_PROTOCOL_REQUIRED_PHRASES:
+        if phrase not in behavior_protocol:
+            fail(errors, f"behavioral-evaluation-protocol.md missing required phrase: {phrase}")
+
     validate_question_bank(root, errors)
     validate_source_trigger_taxonomy(root, errors)
 

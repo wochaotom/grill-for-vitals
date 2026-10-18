@@ -15,6 +15,7 @@ Good evidence:
 - source code or config read in this run
 - tests that exercise the specific risk
 - runtime behavior observed in this run
+- inspected result values and artifacts, not only a command's zero exit code
 - provider/dashboard configuration when available
 - architecture docs that match the code
 - logs or traces outside the actor's write authority
@@ -26,6 +27,7 @@ Weak evidence:
 - "we plan to"
 - prompt instructions without tool/runtime enforcement
 - a passing test suite that does not cover the risk
+- a passing wrapper whose output or produced artifact was not inspected
 - a graph or retrieval summary without direct note reads
 
 ## Secrets And Credentials
@@ -131,11 +133,17 @@ Require:
 - action classes: read, draft, write local, write remote, spend/commit, send/publish, delete/overwrite
 - explicit gates for high-risk action classes
 - tool registry or manifest with owner, permission, and risk metadata
+- source, license, maintainer, version or commit, install path, execution model, scripts/binaries/dependencies, and removal path for skills/plugins/MCP servers
+- local MCP or plugin installers show the exact startup/install command without truncation and require explicit approval before execution
+- tool descriptions, generated schemas, marketplace scores, and "read-only" labels are treated as claims until the handler, permissions, and runtime enforcement are inspected
+- MCP authorization preserves per-client consent, token audience separation, redirect/state validation, session binding, and scoped downstream permissions when remote APIs or OAuth are involved
 - shell/network/filesystem scope documented and enforced
 - audit logs outside the agent's write authority
 - for AI code-review tools: repo data ingestion, cache/embedding/log retention, model-provider boundary, and training settings documented
+- for AI code-review tools: deployment mode, support-access path, subprocessor/model-provider boundary, training opt-out, and deletion/retention settings documented
 - for AI code-review tools: related-repo context, include/exclude paths, skip-review settings, strictness, and file limits prove vital paths are not silently skipped
 - for analyzer execution: sandbox proof, internal-network blocking, no ambient secrets, and short-lived scoped tokens
+- for keyless, x402, usage-metered, or agent-payment tools: spend caps, per-action receipts, sanctions/export trigger decision, and approval boundaries outside the agent's write scope
 - for Kubernetes or IaC-controlled systems: reviewed plan/manifest, cluster/RBAC/service-account scope, pod exec/attach restrictions, secret read permissions, CI identity, scanner findings tied to the exact artifact, and audit logs outside the deploy actor
 - for cloud identity and endpoint/mobile management: IAM policy and role graph, dangerous permission combinations, service-account key inventory, PIM activation/approval/MFA/expiry settings, MDM/MAM policy scope, selective-wipe approval, and privileged-role access reviews
 
@@ -143,6 +151,8 @@ Not enough:
 
 - tool description says "read-only" but handler can mutate
 - MCP server is installed because it is convenient
+- one-click install hides shell commands, dependencies, network access, or filesystem scope
+- generated tool metadata or LLM-written descriptions are used as the permission model
 - terminal panes are assumed safe while hooks/tools mutate config
 - vendor says "secure" or "sandboxed" without configuration, architecture, audit, or contractual evidence
 

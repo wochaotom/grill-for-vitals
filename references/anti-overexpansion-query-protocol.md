@@ -59,19 +59,19 @@ Use rare anchors such as `SCMP`, `Firecracker`, `gVisor`, `ablation`, `verifiers
 
 ## Business Note Corpora
 
-Some business-note corpora may allow graph navigation for broad orientation:
+Business Graphify is retired as of 2026-07-04. Do not consult or refresh Business graph artifacts for routing, coverage, or evidence.
 
-- Consult graph maps only when the user's current policy allows it.
-- Treat graph maps as navigation only.
+Use the Business routing surface instead:
+
+- `QUERY-ENTRY.md` and query packs are navigation hints only.
+- Query packs cannot answer the question, prove coverage, or replace retrieval.
 - Verify every substantive claim against durable notes read directly in this run.
 - Use deterministic retrieval for reproducible receipts.
 
 Correct flow:
 
 ```text
-graph map -> likely communities/notes/terms
-deterministic retrieval -> receipt
-direct durable note reads -> evidence
+query pack hint -> deterministic retrieval -> receipt -> direct durable note reads -> evidence
 ```
 
 Clean receipt examples:

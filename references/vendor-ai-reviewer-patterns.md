@@ -31,6 +31,7 @@ Greptile cues:
 - filters, ignore patterns, skip-review controls, strictness, and file-change limits can accidentally exclude vital paths
 - support access to chat logs or customer data requires audit evidence, least privilege, and customer-visible retention settings
 - As checked on 2026-05-24, Greptile's config docs expose `.greptile/` cascading configuration, `files.json` context inputs, related-repository context, structured rule IDs/severity/scope, and dashboard-enforced org rules; use those as concrete evidence targets, not proof of enforcement
+- As checked on 2026-07-11, Greptile's security page says hosted, self-hosted, and bring-your-own-LLM modes have different code/data boundaries; customer code cache, vector embeddings, chat logs, support access, AI-training opt-out, and administrator deletion are separate evidence targets.
 
 CodeRabbit cues:
 
@@ -39,7 +40,9 @@ CodeRabbit cues:
 - tool catalogs can reveal which scanners or analyzers run and which project-controlled configuration they may parse
 - incident-response claims should be checked against deployment gates, automated sandbox enforcement, audit logs, and vulnerability disclosure process
 - cache opt-out, token scope, and analyzer allowlists should be checked in product settings or config, not assumed from public docs
+- reconcile marketing, documentation, contract, and active-setting claims when retention wording differs; the deployed configuration and enforceable terms control the evidence decision
 - As checked on 2026-05-24, CodeRabbit's tool docs name security and privacy analyzers such as Semgrep/OpenGrep, TruffleHog, Betterleaks, OSV-Scanner, Checkov, Trivy, Brakeman, and Microsoft Presidio; treat each enabled tool as an execution/configuration surface requiring sandbox evidence
+- As checked on 2026-07-11, CodeRabbit's docs and security-posture writing point to cache encryption/expiration, cache opt-out, per-review sandboxing, no ambient sandbox secrets, blocked internal network access, short-lived event-scoped tokens, per-customer cache/index encryption, and training/retention settings as concrete evidence targets.
 
 ## Grill Questions
 
@@ -81,6 +84,7 @@ Why this matters: A reviewer that can also mutate code is part of the control pl
 ## Use Limits
 
 - Treat vendor claims as prompts for evidence, not proof.
+- Treat apparently conflicting retention or security claims as an unresolved configuration question until current settings and terms are inspected.
 - Prefer official standards for requirements and compliance language.
 - Do not copy vendor marketing metrics into findings unless independently verified.
 - Do not let these sources pull Grill into generic PR review. Use them only when source-code ingestion, analyzer execution, AI reviewer authority, or vendor toolchain risk is a vital.

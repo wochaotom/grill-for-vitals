@@ -49,6 +49,14 @@
       "activation": "agent_skill_or_plugin"
     },
     {
+      "id": "mcp-security-best-practices",
+      "name": "Model Context Protocol security best practices and authorization",
+      "tier": "A",
+      "default_weight": 0.9,
+      "scope": ["mcp-security", "mcp-authorization", "oauth", "local-mcp-server", "tool-gateway", "scope-minimization"],
+      "activation": "mcp_tooling"
+    },
+    {
       "id": "mitre-atlas",
       "name": "MITRE ATLAS",
       "tier": "B",

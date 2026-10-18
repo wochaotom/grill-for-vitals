@@ -37,6 +37,9 @@ These were the original anchors used during design. They are retained for lineag
 | Source | Use In This Skill |
 |---|---|
 | NIST AI Risk Management Framework: https://www.nist.gov/itl/ai-risk-management-framework | Govern, Map, Measure, Manage risk framing for AI workflows. |
+| NIST AI 800-2 initial public draft: https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.800-2.ipd.pdf | Evaluation objectives, protocol comparability, development/test separation, uncertainty, and qualified reporting; preliminary guidance, not a final standard. |
+| UK AI Security Institute Inspect: https://inspect.aisi.org.uk/ | Dataset, execution, scorer, log, limit, and approval-policy separation for behavioral evaluation. MIT licensed; no runtime dependency is taken here. |
+| Microsoft PyRIT: https://microsoft.github.io/PyRIT/latest/code/framework/ | Scenario, target, executor, and scorer responsibility boundaries for adversarial evaluation. MIT licensed; no code is imported here. |
 | NIST AI RMF Core: https://airc.nist.gov/airmf-resources/airmf/5-sec-core/ | Concrete AI RMF core functions and categories. |
 | OWASP Top 10 for LLM/GenAI Apps: https://owasp.org/www-project-top-10-for-large-language-model-applications/ | Prompt injection, sensitive information disclosure, excessive agency, supply chain, vector weaknesses, misinformation, unbounded consumption. |
 | OWASP ASVS: https://owasp.org/www-project-application-security-verification-standard/ | Web-app verification baseline for auth, session, access control, validation, logging, and data protection. |

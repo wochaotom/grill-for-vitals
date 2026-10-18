@@ -39,6 +39,7 @@ Use this registry only after a vital activates source-grounded questioning or re
 | `owasp-llm-top10` | B | LLM apps, RAG, prompt/tool injection, sensitive disclosure | Current OWASP GenAI LLM-specific failure modes and mitigations. |
 | `owasp-agentic-apps` | B | Autonomous or tool-using agents | Agent goal hijack, tool misuse, identity abuse, memory/context poisoning, cascading failures. |
 | `owasp-agentic-skills` | B provisional | Skills/plugins/extensions that grant agents workflows or permissions | Skill supply chain, permission manifests, sandboxing, provenance, audit logging. Label incubator/project status. |
+| `mcp-security-best-practices` | A | MCP servers, clients, gateways, local server installs, OAuth-backed MCP tools | Official MCP security and authorization controls for consent, token audience, SSRF, session binding, local-server execution, and scope minimization. |
 | `mitre-atlas` | B | AI adversary modeling, AI attack paths | Adversarial tactics and techniques for AI-enabled systems. |
 | `owasp-asvs` | B | Web apps, auth, session, access control, validation, logging, data protection | Verification requirements; use latest stable ASVS. |
 | `owasp-api-top10` | B | APIs, object/function authorization, sensitive business flows, SSRF, resource consumption | API risk prioritization and question selection. |
@@ -78,6 +79,8 @@ Use this registry only after a vital activates source-grounded questioning or re
 - `owasp-llm-top10`: https://owasp.org/www-project-top-10-for-large-language-model-applications/assets/PDF/OWASP-Top-10-for-LLMs-v2025.pdf
 - `owasp-agentic-apps`: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
 - `owasp-agentic-skills`: https://owasp.org/www-project-agentic-skills-top-10/
+- `mcp-security-best-practices`: https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices
+- `mcp-security-best-practices`: https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
 - `mitre-atlas`: https://atlas.mitre.org/
 - `owasp-asvs`: https://owasp.org/www-project-application-security-verification-standard/
 - `owasp-asvs`: https://github.com/OWASP/ASVS/releases

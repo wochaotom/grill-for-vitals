@@ -39,6 +39,11 @@ PRESETS = {
         },
         "scopes": {"llm", "agent-governance", "prompt-injection"},
     },
+    "mcp-tooling": {
+        "description": "MCP servers, clients, gateways, OAuth-backed tools, local server installs, and MCP tool metadata boundaries.",
+        "activations": {"mcp_tooling"},
+        "scopes": {"mcp-security", "mcp-authorization", "oauth", "local-mcp-server", "tool-gateway", "scope-minimization"},
+    },
     "identity-auth": {
         "description": "High-risk login, account recovery, federation, sessions, API authorization, admin, and tenant isolation.",
         "activations": {"high_risk_identity_or_auth", "web_auth_or_tenancy", "api_or_business_flow"},
@@ -136,7 +141,7 @@ TRIGGER_TAXONOMY = [
     {
         "id": "control-plane-supply-chain",
         "vital": "Secrets/control plane and supply chain/build/deploy",
-        "signals": ["secret", "token", "deploy key", "private key", "github app private key", "github app installation token", "service account", "service account token", "service account key", "service principal", "kms key", "kms signing key", "ci/cd", "ci", "oidc", "github action", "signing", "release", "package publish", "npm publish", "artifact", "dependency execution", "privileged workflow", "terraform", "terraform plan", "tfplan", "cloudformation", "infrastructure as code", "iac scan", "checkov", "tfsec", "terrascan", "kics", "opa policy", "rego policy", "kubernetes", "k8s", "kubeconfig", "kubernetes manifest", "helm chart", "clusterrolebinding", "cluster-admin", "pod exec", "pods/exec", "pods/attach", "privileged pod", "kubernetes audit", "aws iam", "gcp iam", "iam role", "iam policy", "iam:passrole", "passrole", "sts:assumerole", "assumerole", "createfunction", "lambda createfunction", "roles/owner", "roles/editor", "cloud admin", "cloud credential", "access key", "entra role", "azure role", "global administrator", "privileged identity management", "pim", "mdm", "mam", "mobile application management", "intune app protection", "selective wipe", "production database", "prod database", "container registry", "prod image", "protected branches"],
+        "signals": ["secret", "token", "deploy key", "private key", "github app private key", "github app installation token", "service account", "service account token", "service account key", "service principal", "kms key", "kms signing key", "ci/cd", "ci", "oidc", "github action", "signing", "release", "package publish", "npm publish", "artifact", "dependency execution", "privileged workflow", "terraform", "terraform plan", "tfplan", "cloudformation", "infrastructure as code", "iac scan", "checkov", "tfsec", "terrascan", "kics", "opa policy", "rego policy", "kubernetes", "k8s", "kubeconfig", "kubernetes manifest", "helm chart", "clusterrolebinding", "cluster-admin", "pod exec", "pods/exec", "pods/attach", "privileged pod", "kubernetes audit", "aws iam", "gcp iam", "iam role", "iam policy", "iam:passrole", "passrole", "sts:assumerole", "assumerole", "createfunction", "lambda createfunction", "roles/owner", "roles/editor", "cloud admin", "cloud credential", "access key", "entra role", "azure role", "global administrator", "privileged identity management", "pim", "mdm", "mam", "mobile application management", "intune app protection", "selective wipe", "production database", "prod database", "container registry", "prod image", "protected branches", "install hook", "startup command", "skill lockfile", "marketplace install", "one-click mcp configuration", "local mcp server install"],
         "presets": ["control-plane-supply-chain"],
         "question": "Can this credential or workflow deploy, sign, publish, read tenants, delete, or administer identity?",
     },
@@ -185,21 +190,28 @@ TRIGGER_TAXONOMY = [
     {
         "id": "sanctions-export",
         "vital": "Money/billing/trading/procurement and controlled technology",
-        "signals": ["crypto", "virtual currency", "stablecoin", "cross-border finance", "cross border finance", "cashout", "blocked person", "blocked wallet", "ofac", "sanctioned", "sanctioned country", "sanctioned countries", "sanctioned jurisdiction", "encryption export", "encryption sdk", "encryption library", "encryption software", "ear", "itar", "export controlled", "foreign customer", "foreign customers", "overseas customer", "controlled technology"],
+        "signals": ["crypto", "virtual currency", "stablecoin", "x402", "micropayment", "agent payment", "keyless payment", "cross-border finance", "cross border finance", "cashout", "blocked person", "blocked wallet", "ofac", "sanctioned", "sanctioned country", "sanctioned countries", "sanctioned jurisdiction", "encryption export", "encryption sdk", "encryption library", "encryption software", "ear", "itar", "export controlled", "foreign customer", "foreign customers", "overseas customer", "controlled technology"],
         "presets": ["sanctions-export"],
         "question": "Is there international finance, virtual currency, encryption software, or controlled technology transfer?",
     },
     {
         "id": "agentic-llm",
         "vital": "Agent/tool/MCP/browser/shell and high-trust output",
-        "signals": ["llm", "rag", "retrieved", "retrieved docs", "summarizer", "summary", "summarized by agent", "chatbot", "prompt injection", "function calling", "tool use", "tool calls", "browser tool", "browser automation", "shell tool", "mcp", "memory", "agent goal", "ai agent", "workflow agent", "autonomous workflow", "control agent", "agent changes", "agent safe", "from agent", "ai assistant", "ai decides", "model output", "model recommends", "model ranks", "model-mediated", "llm output", "memorization", "memorisation", "pii leakage", "prompt extraction", "training data extraction"],
+        "signals": ["llm", "rag", "retrieved", "retrieved docs", "summarizer", "summary", "summarized by agent", "chatbot", "prompt injection", "function calling", "tool use", "tool calls", "browser tool", "browser automation", "shell tool", "agent tool registry", "agent tool catalog", "agent tool manifest", "agent tool schema", "agent tool description", "agent tool metadata", "tool poisoning", "tool rug pull", "tool shadowing", "agent skill", "agent plugin", "skills registry", "skill marketplace", "plugin marketplace", "permission manifest", "memory", "agent goal", "ai agent", "workflow agent", "autonomous workflow", "control agent", "agent changes", "agent safe", "from agent", "ai assistant", "ai decides", "model output", "model recommends", "model ranks", "model-mediated", "llm output", "memorization", "memorisation", "pii leakage", "prompt extraction", "training data extraction"],
         "presets": ["agentic-llm"],
         "question": "Can the model influence tools, private data, decisions, sends, or state changes?",
     },
     {
+        "id": "mcp-tooling",
+        "vital": "Agent/tool/MCP/browser/shell",
+        "signals": ["mcp", "mcp server", "local mcp server", "mcp gateway", "mcp client", "mcp tool", "mcp tool catalog", "mcp tool schema", "mcp tool description", "mcp authorization", "mcp oauth", "mcp session", "remote mcp server"],
+        "presets": ["agentic-llm", "mcp-tooling"],
+        "question": "Does this MCP surface expose local execution, remote APIs, OAuth tokens, mutable tools, or model-visible tool metadata?",
+    },
+    {
         "id": "ai-review-toolchain",
         "vital": "Agent/tool/MCP/browser/shell and supply chain/build/deploy",
-        "signals": ["pr bot", "pull request bot", "ai reviewer", "reviewer app", "greptile", "coderabbit", "analyzer", "rubocop", "semgrep", "trufflehog", "presidio", "linter", "linters", "one-click fix", "one click fixes", "review sandbox", "repo index", "related repositories", "code embeddings", "short lived github token"],
+        "signals": ["pr bot", "pull request bot", "ai reviewer", "reviewer app", "greptile", "coderabbit", "analyzer", "rubocop", "semgrep", "trufflehog", "presidio", "linter", "linters", "one-click fix", "one click fixes", "review sandbox", "review worker", "third-party analyzer", "repo index", "related repositories", "code embeddings", "vector embeddings", "customer code cache", "support access", "training opt-out", "short lived github token", "short-lived github token", "short lived repo token", "short-lived repo token"],
         "presets": ["ai-review-toolchain"],
         "question": "Does the tool ingest source, execute analyzers, receive tokens, cache indexes, or mutate PRs?",
     },
@@ -227,7 +239,7 @@ TRIGGER_TAXONOMY = [
     {
         "id": "cost-availability",
         "vital": "Cost/availability/runaway loops",
-        "signals": ["retry", "retries", "fanout", "job queue", "queue backlog", "queue fanout", "queue retry", "background job", "model spend", "rate limit", "rate limit bypass", "outage", "denial-of-wallet", "denial of wallet", "cost loop", "recursive", "quota exhausted", "cloud bill", "bill spike", "infinite retry", "burn tokens", "token burn", "graphql depth", "graphql query complexity", "query complexity", "depth limit", "recursive query", "nested query", "api enumeration"],
+        "signals": ["retry", "retries", "fanout", "job queue", "queue backlog", "queue fanout", "queue retry", "background job", "model spend", "rate limit", "rate limit bypass", "outage", "denial-of-wallet", "denial of wallet", "cost loop", "recursive", "quota exhausted", "cloud bill", "bill spike", "infinite retry", "burn tokens", "token burn", "pay api", "pay apis", "paid api", "api payment", "api spend", "pay-per-call tool", "usage-metered tool", "micropayment loop", "x402 loop", "graphql depth", "graphql query complexity", "query complexity", "depth limit", "recursive query", "nested query", "api enumeration"],
         "presets": ["cost-availability"],
         "question": "Can this loop spend money, exhaust quota, or take production down?",
     },
@@ -400,6 +412,8 @@ def self_test(entries: list[dict], links: dict[str, list[str]]) -> int:
             raise SystemExit("identity-auth should use ASVS/API Top 10, not broad OWASP Top 10")
         if preset == "ai-review-toolchain" and not ({"A", "B"}.intersection(tiers) and "D" in tiers):
             raise SystemExit("ai-review-toolchain must include Tier A/B and Tier D sources")
+        if preset == "mcp-tooling" and ids != {"mcp-security-best-practices"}:
+            raise SystemExit("mcp-tooling should only return MCP security best practices")
         if preset == "high-trust-output" and ids != {"nist-ai-rmf", "nist-ai-600-1"}:
             raise SystemExit("high-trust-output should only return NIST AI RMF and NIST AI 600-1")
         if preset == "control-plane-supply-chain" and ids != {"nist-ssdf", "cisa-secure-by-design"}:
@@ -473,6 +487,12 @@ def self_test(entries: list[dict], links: dict[str, list[str]]) -> int:
         "aws iam passrole lets service account create admin lambda": {"control-plane-supply-chain"},
         "edr endpoint telemetry disabled during breach": {"incident-recovery"},
         "mobile sharedpreferences stores ssn and auth token": {"privacy-customer-content", "control-plane-supply-chain"},
+        "public skill marketplace installer adds scripts and install hook": {"agentic-llm", "control-plane-supply-chain"},
+        "one-click mcp configuration runs local mcp server startup command": {"agentic-llm", "mcp-tooling", "control-plane-supply-chain"},
+        "mcp tool poisoning hides delete behavior in tool description": {"agentic-llm", "mcp-tooling"},
+        "agent uses x402 keyless payment connector with micropayment loop": {"sanctions-export", "cost-availability"},
+        "one-click mcp configuration starts a local server that can delete records and pay apis": {"agentic-llm", "mcp-tooling", "control-plane-supply-chain", "cost-availability"},
+        "ai reviewer support access can view customer code cache and vector embeddings": {"ai-review-toolchain"},
     }
     for surface, expected_presets in trigger_cases.items():
         _, inferred = infer_trigger_presets([surface])

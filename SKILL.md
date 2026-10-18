@@ -35,6 +35,7 @@ Load only the references needed for the current task:
 - `references/vitals-source-matrix.md`: vital-to-source-preset and evidence-gate map.
 - `references/vendor-ai-reviewer-patterns.md`: Greptile/CodeRabbit-inspired AI code-review security patterns; use as vendor/practitioner input only.
 - `references/pressure-scenarios.md`: validation prompts for skill iteration; do not load during normal Grill runs.
+- `references/behavioral-evaluation-protocol.md`: baseline/candidate promotion protocol for skill iteration; do not load during normal Grill runs.
 - `references/source-map.md`: local-vault and historical lineage, not the active source registry.
 - `references/report-template.md`: output shape for Vitals reports.
 
@@ -147,11 +148,11 @@ Escalate as `Red` until fixed or explicitly accepted:
 Use vault research only when the user asks for it or when local context clearly requires the user's vault doctrine. Follow the relevant skill rules exactly.
 
 - Academic: use `aquery`/Academic retrieval rules. By default, do not consult Academic Graphify. If the user explicitly changes that policy in the current turn, use Academic Graphify only as a navigation map to find candidate notes or terms, never as evidence or coverage.
-- Business: use Business Graphify as navigation only, then verify against durable notes and deterministic retrieval receipts.
+- Business: use `bquery`/Business retrieval rules. Business Graphify is retired; use `QUERY-ENTRY.md` and query packs only as routing hints, then verify against deterministic retrieval receipts and durable notes read directly in this run.
 - Any overflowed retrieval is navigation only unless the full candidate set is read through the required process.
 
 Use `anti-overexpansion-query-protocol.md` before making vault-grounded claims.
 
 ## Skill Iteration Checks
 
-When editing this skill, run `quick_validate.py`, `scripts/validate_grill_skill.py`, `scripts/source_activation_plan.py --self-test`, `scripts/calibrate_source_taxonomy.py` (GFV-100 plus regression cases), a representative `scripts/source_activation_plan.py --surface "<surface>"` check, `scripts/check_source_links.py`, `scripts/check_code_hygiene_overlap.py`, and `scripts/validator_smoke_tests.py` before claiming the edit is sound. If making version-specific or high-stakes standards claims, also run `scripts/check_source_links.py --online` or browse the cited primary sources during the run.
+When editing this skill, run `quick_validate.py`, `scripts/validate_grill_skill.py`, `scripts/source_activation_plan.py --self-test`, `scripts/calibrate_source_taxonomy.py` (GFV-100 plus regression cases), a representative `scripts/source_activation_plan.py --surface "<surface>"` check, `scripts/check_source_links.py`, `scripts/check_code_hygiene_overlap.py`, and `scripts/validator_smoke_tests.py` before claiming the edit is sound. For behavior-changing edits, follow `behavioral-evaluation-protocol.md` and compare matched receipts with `scripts/evaluate_behavioral_runs.py`; static validation is not a behavioral promotion result. If making version-specific or high-stakes standards claims, also run `scripts/check_source_links.py --online` or browse the cited primary sources during the run.

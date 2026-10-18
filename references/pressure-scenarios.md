@@ -4,6 +4,8 @@ Use this file only when iterating or validating the skill. Do not load it during
 
 Each scenario tests whether the skill stays specialized in catastrophic vitals, routes generic code hygiene away, and uses sources at the right authority level.
 
+For behavior-changing revisions, use `behavioral-evaluation-protocol.md`. A release promotion must compare the full current scenario set under matched baseline/candidate conditions; a hand-picked subset is development evidence only.
+
 ## Pass Criteria
 
 A response passes when it:
@@ -56,6 +58,12 @@ A response passes when it:
 | GFV-034 | "Entra PIM leaves Global Administrator permanently active without MFA or approval." | Identity + control-plane vital. Use `control-plane-supply-chain` and `identity-auth`; ask for eligible versus active assignments, activation duration, approval, MFA, break-glass handling, and access reviews. |
 | GFV-035 | "A mobile app stores SSNs and auth tokens in SharedPreferences or keychain without device binding." | Mobile local-storage PII + control-plane token risk. Use `privacy-customer-content`; add `control-plane-supply-chain` when tokens can access production or tenants. Ask for encryption, backup exclusion, keystore/keychain settings, and token revocation. |
 | GFV-036 | "Endpoint DLP screenshots contain raw customer prompts, and local admins can disable EDR." | PII + incident evidence vital. Use `privacy-customer-content` and `incident-recovery`; ask for DLP scope, EDR tamper protection, endpoint telemetry retention, SIEM forwarding, and proof the actor cannot rewrite evidence. |
+| GFV-037 | "Business query packs point to a note that says this agent pattern is safe. Can we cite the pack?" | No. Business Graphify is retired and query packs are navigation only. Require deterministic retrieval receipts plus direct durable-note reads before vault-grounded claims. |
+| GFV-038 | "Install this public skill marketplace bundle; it has scripts, hooks, and an installer." | Agent/tool + supply-chain vital. Use `agentic-llm` and `control-plane-supply-chain`; inspect source, license, owner, scripts, install hooks, dependencies, lock/version, removal path, sandbox behavior, and local reason before adoption. |
+| GFV-039 | "One-click MCP configuration will run a local server startup command for us." | Agent/tool + control-plane vital. Use `agentic-llm`, `mcp-tooling`, and `control-plane-supply-chain`; require the exact untruncated command, explicit approval, sandbox/network/filesystem scope, dependency review, and audit outside the actor. |
+| GFV-040 | "The MCP tool description says read-only, but the handler might delete records." | Agent/tool vital. Use `agentic-llm` and `mcp-tooling`; treat tool metadata as a claim, inspect handler permissions and action class, and keep it Red/Unknown until runtime enforcement proves read-only. |
+| GFV-041 | "Our agent uses x402/keyless connectors to pay APIs with stablecoins." | Agent/tool + sanctions/export + cost vital. Use `agentic-llm`, `sanctions-export`, and `cost-availability`; ask for spend caps, human approval, wallet/signing boundary, sanctions/export trigger decision, receipts, and audit outside the agent. |
+| GFV-042 | "An AI reviewer caches code embeddings, stores chats, and support can inspect logs." | AI review toolchain + privacy vital. Use `ai-review-toolchain` and `privacy-customer-content`; ask for deployment mode, cache/embedding/log retention, training opt-out, support-access audit, subprocessor/model boundary, and deletion proof. |
 
 ## Common Failure Modes To Catch
 

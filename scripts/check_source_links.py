@@ -16,6 +16,10 @@ REGISTRY_ID_RE = re.compile(r"^\| `([^`]+)` \|")
 LINK_RE = re.compile(r"^- `([^`]+)`: (https://\S+)$")
 
 
+def error_detail(error: BaseException) -> str:
+    return str(getattr(error, "reason", error))
+
+
 def read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
@@ -74,10 +78,10 @@ def check_online(url: str, timeout: float) -> tuple[str, int | None, str | None]
             if second_error.code == 403:
                 return "warning", second_error.code, "forbidden to bot/user-agent"
             return "error", second_error.code, second_error.reason
-        except URLError as second_error:
-            return "error", None, str(second_error.reason)
-    except URLError as error:
-        return "error", None, str(error.reason)
+        except (OSError, TimeoutError, URLError) as second_error:
+            return "error", None, error_detail(second_error)
+    except (OSError, TimeoutError, URLError) as error:
+        return "error", None, error_detail(error)
 
 
 def main() -> int:

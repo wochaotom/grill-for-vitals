@@ -105,6 +105,7 @@ The skill then uses those presets to choose evidence gates and source families. 
 The repo includes deterministic checks for drift:
 
 ```bash
+python quick_validate.py
 python scripts/validate_grill_skill.py .
 python scripts/source_activation_plan.py --self-test
 python scripts/calibrate_source_taxonomy.py
@@ -113,7 +114,15 @@ python scripts/check_code_hygiene_overlap.py
 python scripts/validator_smoke_tests.py
 ```
 
-Current calibration covers 231 routing and regression cases, including:
+Behavior-changing revisions use matched baseline and candidate transcripts rather than static checks alone. Follow `references/behavioral-evaluation-protocol.md`, then evaluate the reviewed JSONL receipts:
+
+```bash
+python scripts/evaluate_behavioral_runs.py --results path/to/results.jsonl
+```
+
+A promotion result requires every current public pressure case, at least three fresh repetitions per case and variant, matching runtime configuration, independent review, zero hard failures, and no per-check regression. The evaluator compares receipts; it does not run or judge the agent.
+
+Current calibration covers 238 routing and regression cases, including:
 
 - ransomware and restore-test failure
 - public object storage and signed URL exposure
@@ -162,8 +171,11 @@ How to read this layout:
 | `references/source-registry.md` | Source catalog with authority tiers, freshness expectations, and links. |
 | `references/source-weights.json` | Machine-readable source weights used by the routing and calibration scripts. |
 | `references/pressure-scenarios.md` | Realistic prompts used to test whether the skill catches catastrophic paths and avoids overreach. |
+| `references/behavioral-evaluation-protocol.md` | Baseline/candidate transcript, review, and promotion contract for behavior-changing revisions. |
+| `quick_validate.py` | Fast local validation wrapper for the core structural, routing, calibration, and link-integrity checks. |
 | `scripts/source_activation_plan.py` | CLI router that maps an observed surface to source presets and questions. |
 | `scripts/calibrate_source_taxonomy.py` | Regression suite for routing misses, ambiguity failures, and over-claim risks. |
+| `scripts/evaluate_behavioral_runs.py` | Validates matched behavior receipts and blocks incomplete, drifted, self-reviewed, or regressed promotion sets. |
 | `scripts/validate_grill_skill.py` | Structural validator for source IDs, references, required files, and scope boundaries. |
 
 The repo is split this way so agents can start from the small runtime skill, then pull only the reference or script needed for the risk surface in front of them.

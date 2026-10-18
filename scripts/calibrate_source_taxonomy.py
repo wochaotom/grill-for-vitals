@@ -17,7 +17,7 @@ EXPECTED_CATEGORY_COUNTS = {
     "ambiguity": 10,
     "adversarial": 10,
 }
-EXPECTED_REGRESSION_COUNT = 131
+EXPECTED_REGRESSION_COUNT = 138
 
 NO_COMPLIANCE_RULE = "Do not claim compliance or readiness from this plan."
 
@@ -71,7 +71,7 @@ CASES = [
     case("route-export-035", "routing", "encryption SDK export to foreign customers", ["sanctions-export"]),
     case("route-payment-export-036", "routing", "card payments plus crypto cashout across borders", ["payments-sanctions-export"]),
     case("route-agent-037", "routing", "LLM agent has browser tool and can send emails", ["agentic-llm"]),
-    case("route-agent-038", "routing", "MCP tool can delete files after prompt injection", ["agentic-llm"]),
+    case("route-agent-038", "routing", "MCP tool can delete files after prompt injection", ["agentic-llm", "mcp-tooling"]),
     case("route-agent-039", "routing", "agent memory stores customer prompts", ["agentic-llm", "privacy-customer-content"]),
     case("route-agent-040", "routing", "RAG summarizes uploaded customer contracts", ["agentic-llm", "privacy-customer-content"]),
     case("route-agent-041", "routing", "AI agent uses shell tool to run migration commands", ["agentic-llm"]),
@@ -268,6 +268,13 @@ REGRESSION_CASES = [
     case("regression-229", "regression", "Falcon sensor logs are editable by local admin during breach", ["incident-recovery"]),
     case("regression-230", "regression", "endpoint DLP screenshots capture raw customer prompts", ["incident-recovery", "privacy-customer-content"]),
     case("regression-231", "regression", "BYOD MAM policy allows legal docs into personal cloud backup", ["control-plane-supply-chain", "privacy-customer-content"]),
+    case("regression-232", "regression", "public skill marketplace installer adds scripts and install hook to agent config", ["agentic-llm", "control-plane-supply-chain"]),
+    case("regression-233", "regression", "one-click MCP configuration runs local MCP server startup command", ["agentic-llm", "mcp-tooling", "control-plane-supply-chain"]),
+    case("regression-234", "regression", "MCP tool poisoning hides delete behavior in tool description", ["agentic-llm", "mcp-tooling"]),
+    case("regression-235", "regression", "tool rug pull changes read-only MCP server into write action after approval", ["agentic-llm", "mcp-tooling"]),
+    case("regression-236", "regression", "agent uses x402 keyless payment connector with micropayment loop", ["sanctions-export", "cost-availability"]),
+    case("regression-237", "regression", "AI reviewer support access can view customer code cache and vector embeddings", ["ai-review-toolchain"]),
+    case("regression-238", "regression", "one-click MCP configuration starts a local server that can delete records and pay APIs", ["agentic-llm", "mcp-tooling", "control-plane-supply-chain", "cost-availability"]),
 ]
 
 
