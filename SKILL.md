@@ -112,7 +112,7 @@ Use `evidence-gates.md` to decide whether a control is proven. Prefer direct art
 
 ### 5. Activate Sources
 
-Every activated vital gets at least one preset, picked as described under Reference Loading. Name the presets in each round's `Sources:` line (step 6). Then use `source-registry.md` and `source-weights.json` only after a vital activates them. Prefer primary official sources for current claims. Label drafts, concepts, proposals, local vault notes, academic papers, and vendor writing as weaker evidence. Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, tax, or safety compliance from this skill.
+Every activated vital gets at least one preset, picked as described under Reference Loading. Name the presets in each round's `Sources:` line (step 6). Then use `source-registry.md` and `source-weights.json` only after a vital activates them. Prefer primary official sources for current claims. Label drafts, concepts, proposals, local vault notes, academic papers, and vendor writing as weaker evidence. Activate a regulated-scope preset (for example `health-ephi`, `payments-cardholder`, `child-privacy`, `sanctions-export`, `federal-defense`) only when the description or evidence shows that scope applies; if it is plausible but unconfirmed, ask whether it applies as a round question instead of assuming it. Do not claim SOC 2, HIPAA, PCI DSS, FedRAMP, CMMC, legal, medical, financial, tax, or safety compliance from this skill.
 
 ### 6. Grill In Rounds
 
