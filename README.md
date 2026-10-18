@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Skill](https://img.shields.io/badge/skill-grill--for--vitals-blue)](SKILL.md)
 
-Grill For Vitals is a review skill for high-risk engineering work. It is not a generic security checklist, a compliance certification, or a replacement for code hygiene.
+Grill For Vitals is a review skill for high-risk engineering work. It is not a generic security checklist, a compliance certification, or a replacement for ordinary code review.
 
 It exists for the moments where the question is sharper:
 

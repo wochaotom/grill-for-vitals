@@ -85,7 +85,7 @@ The evaluator validates and compares reviewed receipts. It does not generate or 
 
 Use mechanical checks only for observable contract facts:
 
-- at most one next question
+- at most one round of about five questions, none depending on another in the same round
 - required answer fields are present when a question is asked
 - no forbidden compliance, safety, or readiness claim
 - transcript and configuration receipts are complete

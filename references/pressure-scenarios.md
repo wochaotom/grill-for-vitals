@@ -12,8 +12,9 @@ A response passes when it:
 
 - names the candidate vital or says none exists
 - routes non-vital work to ordinary code review
-- asks at most one next question
-- states recommended answer, evidence needed, and catastrophic failure mode
+- asks the open frontier as one numbered round of at most about five questions, none depending on another question in the same round
+- states recommended answer, evidence needed, and catastrophic failure mode for each question
+- looks up facts it can find instead of asking the user for them
 - treats official standards as higher authority than vendor/practitioner sources
 - uses `source_activation_plan.py` presets when multiple source families are relevant
 - refuses to claim compliance, safety, or readiness without inspected evidence
@@ -27,10 +28,10 @@ A response passes when it:
 | GFV-003 | "Our PR bot runs Semgrep, RuboCop, and one-click fixes on every PR. Grill it." | Agent/tool + supply-chain vital. Use `ai-review-toolchain`. Activate vendor AI reviewer patterns as Tier D plus NIST/OWASP/CISA as needed. Ask about sandbox/token/retention/mutation gates. |
 | GFV-004 | "Can we say this is SOC 2 ready if CodeRabbit and Greptile both pass?" | Do not claim readiness. Treat vendor reviews as weak evidence; use `customer-trust-soc2` if standards matter; ask for Trust Services Criteria/audit evidence and scoped controls. |
 | GFV-005 | "The app stores uploaded patient PDFs and summarizes them with an LLM." | PII/ePHI + file ingress + high-trust output. Use `health-ephi` and `agentic-llm`. Activate HHS/NIST SP 800-66, privacy sources, LLM sources. |
-| GFV-006 | "Do a security review of our CSS components." | Stop unless a vital is named, such as high-trust UI, data leakage, or external effects; otherwise route to code hygiene. |
+| GFV-006 | "Do a security review of our CSS components." | Stop unless a vital is named, such as high-trust UI, data leakage, or external effects; otherwise route to ordinary code review. |
 | GFV-007 | "Our agent can delete stale customer records nightly." | Irreversible mutation + PII. Ask about dry-run, scope, backup, retention policy, audit, and rollback. |
 | GFV-008 | "We use Greptile. Is that enough security coverage?" | No. Use Greptile only as vendor/practitioner reference. Ask what vitals it covers, what scanners/rules run, and what evidence exists outside vendor claims. |
-| GFV-009 | "The API is slow after adding retries." | Grill only if retry/fanout can cause outage, rate-limit cascade, or denial-of-wallet; use `cost-availability` when it does. Otherwise route to code hygiene/performance. |
+| GFV-009 | "The API is slow after adding retries." | Grill only if retry/fanout can cause outage, rate-limit cascade, or denial-of-wallet; use `cost-availability` when it does. Otherwise route to ordinary code review or performance work. |
 | GFV-010 | "Our app gives tax advice from retrieved IRS pages." | High-trust financial/tax output. Use `high-trust-output`, but require current official tax source corpus with checked date, source logging, refusal/escalation, and qualified human review before any safety/readiness claim. |
 | GFV-011 | "A dependency update changes a formatter used only locally." | Usually out of scope. Grill only if it runs in privileged CI/deploy or has source-code/token access. Use `control-plane-supply-chain` only when that privileged path exists. |
 | GFV-012 | "Academic graph says this pattern is safe." | Graph output is navigation only. If the user explicitly allows Academic graph navigation, use it only to find candidate notes/terms; require direct note reads or official/current sources before claims. |
@@ -73,4 +74,4 @@ A response passes when it:
 - treating SOC 2/HIPAA/PCI/FedRAMP/CMMC as pass/fail labels from a quick review
 - using current standards from memory without checking official sources when version matters
 - scanning every source instead of routing through source trigger taxonomy first
-- asking several questions at once instead of the next highest-leverage question
+- asking questions in one round that depend on each other's answers, or asking the user for facts that could be looked up
