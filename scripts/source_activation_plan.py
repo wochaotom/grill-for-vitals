@@ -114,6 +114,16 @@ PRESETS = {
         "activations": {"api_or_business_flow", "incident_or_program_risk"},
         "scopes": {"resource-consumption", "recoverability"},
     },
+    "money-business-logic": {
+        "description": "Billing, subscriptions, refunds, credits, balances, payouts, bids, and webhook-driven money or entitlement state outside cardholder-data scope.",
+        "activations": set(),
+        "scopes": {"sensitive-business-flows", "business-logic"},
+    },
+    "file-ingress": {
+        "description": "Untrusted files and URLs reaching parsers, archive extraction, storage paths, or internal fetches.",
+        "activations": set(),
+        "scopes": {"file-handling", "ssrf"},
+    },
     "payments-sanctions-export": {
         "description": "Combined cardholder/payment data plus sanctions, virtual-currency, cross-border finance, or export-control exposure.",
         "activations": {
@@ -186,6 +196,20 @@ TRIGGER_TAXONOMY = [
         "signals": ["cardholder", "cardholder name", "pan", "full pan", "cvv", "credit card", "card number", "card integration", "payment card", "card payment", "card payments", "payment account", "payment token", "card storage", "payment environment", "payment form", "checkout", "tokenization", "hosted provider", "psp", "vaulting", "card cashout", "card payout"],
         "presets": ["payments-cardholder"],
         "question": "Does cardholder/payment-account data enter the app or only the hosted provider?",
+    },
+    {
+        "id": "money-business-logic",
+        "vital": "Money/billing/trading/procurement",
+        "signals": ["billing", "billing state", "billing webhook", "payment webhook", "stripe webhook", "subscription", "subscriptions", "subscription quota", "quota update", "plan upgrade", "plan downgrade", "entitlement", "entitlements", "refund", "refunds", "chargeback", "chargebacks", "store credit", "account credit", "promo code", "coupon", "coupons", "discount code", "gift card", "wallet balance", "account balance", "ledger", "payout", "payouts", "invoice payment", "invoice amount", "invoice status", "usage-based billing", "metered billing", "idempotency key", "double charge", "double spend", "procurement", "purchase order", "bid", "bids", "auction"],
+        "presets": ["money-business-logic"],
+        "question": "Can this path create, change, or move money, credits, or entitlements without provider-verified truth and idempotency?",
+    },
+    {
+        "id": "file-ingress",
+        "vital": "File ingress and storage",
+        "signals": ["upload handler", "zip archive", "zip archives", "archive extraction", "extract archive", "unzip", "zip slip", "file parser", "file parsing", "pdf parser", "image processing", "imagemagick", "ocr", "untrusted file", "untrusted files", "malware scan", "mime type", "content-type", "svg upload", "path traversal", "temp file", "temp files", "url fetch", "fetch url", "remote url import", "import from url"],
+        "presets": ["file-ingress"],
+        "question": "Can an untrusted file or URL reach a parser, storage path, or internal network without type, size, path, and sandbox limits?",
     },
     {
         "id": "sanctions-export",
@@ -284,6 +308,8 @@ SUPPRESS_TRIGGER_PHRASES = {
     "health-ephi": ["sample patient fixture in docs", "generic docs with fake data", "patient fixture in docs", "example uses fake data in docs"],
     "child-privacy": ["no student data", "internal hr demo", "employee roster"],
     "payments-cardholder": ["fake card", "mock checkout", "storybook"],
+    "money-business-logic": ["pricing page copy", "billing page copy", "invoice template styling", "storybook"],
+    "file-ingress": ["ocr docs only", "storybook"],
     "cost-availability": ["no production queue", "unit tests for retry", "local suite", "graphql schema docs example only", "graphql query docs only"],
     "agentic-llm": ["storybook mock", "mock chatbot", "unit tests for chatbot", "no model call", "canned messages", "internal lunch menu", "css specificity examples in docs", "llm glossary docs"],
     "ai-review-toolchain": ["without repo tokens or customer data", "document coderabbit setup steps", "without running analyzer or pr bot", "semgrep rule documentation"],
@@ -384,6 +410,9 @@ def infer_trigger_presets(surfaces: list[str]) -> tuple[list[dict], list[str]]:
     if {"payments-cardholder", "sanctions-export"}.issubset(preset_set):
         preset_set.difference_update({"payments-cardholder", "sanctions-export"})
         preset_set.add("payments-sanctions-export")
+    # Card, sanctions/crypto, and financial-record presets are the more specific money routes.
+    if preset_set & {"payments-cardholder", "sanctions-export", "payments-sanctions-export", "financial-customer-data"}:
+        preset_set.discard("money-business-logic")
     if {"child-privacy", "biometric-identity"}.issubset(preset_set):
         preset_set.difference_update({"child-privacy", "biometric-identity"})
         preset_set.add("child-biometric")
@@ -438,6 +467,8 @@ def self_test(entries: list[dict], links: dict[str, list[str]]) -> int:
             raise SystemExit("incident-recovery missing NIST CSF 2.0 or SP 800-61r3")
         if preset == "safety-ot" and ids != {"nist-sp-800-82r3", "nist-csf-2"}:
             raise SystemExit("safety-ot should only return NIST SP 800-82 Rev. 3 and NIST CSF")
+        if preset in {"money-business-logic", "file-ingress"} and ids != {"owasp-asvs", "owasp-api-top10"}:
+            raise SystemExit(f"{preset} should only return OWASP ASVS and OWASP API Top 10")
         if preset == "cost-availability" and ids != {"owasp-api-top10", "nist-csf-2"}:
             raise SystemExit("cost-availability should only return OWASP API Top 10 and NIST CSF")
         if preset == "payments-sanctions-export":
@@ -493,6 +524,8 @@ def self_test(entries: list[dict], links: dict[str, list[str]]) -> int:
         "agent uses x402 keyless payment connector with micropayment loop": {"sanctions-export", "cost-availability"},
         "one-click mcp configuration starts a local server that can delete records and pay apis": {"agentic-llm", "mcp-tooling", "control-plane-supply-chain", "cost-availability"},
         "ai reviewer support access can view customer code cache and vector embeddings": {"ai-review-toolchain"},
+        "stripe webhook updates subscription quota": {"money-business-logic"},
+        "users upload zip archives that we extract and parse": {"file-ingress"},
     }
     for surface, expected_presets in trigger_cases.items():
         _, inferred = infer_trigger_presets([surface])

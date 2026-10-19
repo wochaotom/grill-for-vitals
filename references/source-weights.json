@@ -69,7 +69,7 @@
       "name": "OWASP ASVS",
       "tier": "B",
       "default_weight": 0.9,
-      "scope": ["web-auth", "sessions", "access-control", "validation", "logging", "data-protection"],
+      "scope": ["web-auth", "sessions", "access-control", "validation", "business-logic", "file-handling", "logging", "data-protection"],
       "activation": "web_auth_or_tenancy"
     },
     {

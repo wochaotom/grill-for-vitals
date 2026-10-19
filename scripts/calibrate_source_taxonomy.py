@@ -17,7 +17,7 @@ EXPECTED_CATEGORY_COUNTS = {
     "ambiguity": 10,
     "adversarial": 10,
 }
-EXPECTED_REGRESSION_COUNT = 138
+EXPECTED_REGRESSION_COUNT = 150
 
 NO_COMPLIANCE_RULE = "Do not claim compliance or readiness from this plan."
 
@@ -275,6 +275,18 @@ REGRESSION_CASES = [
     case("regression-236", "regression", "agent uses x402 keyless payment connector with micropayment loop", ["sanctions-export", "cost-availability"]),
     case("regression-237", "regression", "AI reviewer support access can view customer code cache and vector embeddings", ["ai-review-toolchain"]),
     case("regression-238", "regression", "one-click MCP configuration starts a local server that can delete records and pay APIs", ["agentic-llm", "mcp-tooling", "control-plane-supply-chain", "cost-availability"]),
+    case("regression-239", "regression", "Stripe webhook updates subscription quota and plan upgrade", ["money-business-logic"]),
+    case("regression-240", "regression", "refund endpoint issues store credit without idempotency key", ["money-business-logic"]),
+    case("regression-241", "regression", "AI agent can issue refunds and payouts from the ledger", ["agentic-llm", "money-business-logic"]),
+    case("regression-242", "regression", "procurement workflow submits purchase order bids automatically", ["money-business-logic"]),
+    case("regression-243", "regression", "checkout saves credit card number for subscription renewal", ["payments-cardholder"]),
+    case("regression-244", "regression", "fix spacing in billing page copy", []),
+    case("regression-245", "regression", "users upload zip archives that we extract and parse", ["file-ingress"], allowed_presets=["file-ingress", "privacy-customer-content"]),
+    case("regression-246", "regression", "PDF parser runs on untrusted files from customers", ["file-ingress"]),
+    case("regression-247", "regression", "import from URL fetches internal metadata endpoint", ["file-ingress"], allowed_presets=["file-ingress", "privacy-customer-content"]),
+    case("regression-248", "regression", "SVG upload rendered by ImageMagick on the server", ["file-ingress"], allowed_presets=["file-ingress", "privacy-customer-content"]),
+    case("regression-249", "regression", "OCR on uploaded patient PDFs before an LLM summarizes them", ["health-ephi", "agentic-llm", "file-ingress"], allowed_presets=["health-ephi", "agentic-llm", "file-ingress", "privacy-customer-content"]),
+    case("regression-250", "regression", "fix typo in OCR docs only", []),
 ]
 
 

@@ -132,6 +132,8 @@ SOURCE_PLANNER_REQUIRED_PHRASES = [
     "cost-availability",
     "payments-sanctions-export",
     "federal-defense",
+    "money-business-logic",
+    "file-ingress",
 ]
 
 SOURCE_PLANNER_NON_PRESET_PHRASES = {

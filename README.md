@@ -121,7 +121,7 @@ python scripts/evaluate_behavioral_runs.py --results path/to/results.jsonl
 
 A promotion result requires every current public pressure case, at least three fresh repetitions per case and variant, matching runtime configuration, independent review, zero hard failures, and no per-check regression. The evaluator compares receipts; it does not run or judge the agent.
 
-Current calibration covers 238 routing and regression cases, including:
+Current calibration covers 250 routing and regression cases, including:
 
 - ransomware and restore-test failure
 - public object storage and signed URL exposure
@@ -130,6 +130,7 @@ Current calibration covers 238 routing and regression cases, including:
 - BOLA, IDOR, GraphQL query complexity, and rate-limit bypass
 - cloud IAM, Entra PIM, MDM/MAM, mobile local storage, and EDR evidence
 - DSAR, DPIA, ROPA, retention, consent withdrawal, cross-border transfer, breach notification, vendor/subprocessor, child, employee, biometric, and AI privacy governance
+- billing, refunds, credits, payouts and bids, and untrusted file or URL ingress
 - docs-only and mock-data suppression cases
 
 ## Repository Structure

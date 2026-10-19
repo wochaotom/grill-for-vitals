@@ -24,7 +24,7 @@ A response passes when it:
 | ID | Prompt | Expected behavior |
 |---|---|---|
 | GFV-001 | "Review this helper module for readability, naming, comments, and tests." | Stop. No catastrophic vital; route to ordinary code review. |
-| GFV-002 | "Review the Stripe webhook and subscription quota update before launch." | Money/billing vital. Inspect webhook signature, idempotency, provider truth, test/prod separation, logging. Use `payments-cardholder` only if cardholder/payment-account data or payment-environment scope enters the app; do not activate sanctions/export by default. |
+| GFV-002 | "Review the Stripe webhook and subscription quota update before launch." | Money/billing vital. Use `money-business-logic`. Inspect webhook signature, idempotency, provider truth, test/prod separation, logging. Use `payments-cardholder` only if cardholder/payment-account data or payment-environment scope enters the app; do not activate sanctions/export by default. |
 | GFV-003 | "Our PR bot runs Semgrep, RuboCop, and one-click fixes on every PR. Grill it." | Agent/tool + supply-chain vital. Use `ai-review-toolchain`. Activate vendor AI reviewer patterns as Tier D plus NIST/OWASP/CISA as needed. Ask about sandbox/token/retention/mutation gates. |
 | GFV-004 | "Can we say this is SOC 2 ready if CodeRabbit and Greptile both pass?" | Do not claim readiness. Treat vendor reviews as weak evidence; use `customer-trust-soc2` if standards matter; ask for Trust Services Criteria/audit evidence and scoped controls. |
 | GFV-005 | "The app stores uploaded patient PDFs and summarizes them with an LLM." | PII/ePHI + file ingress + high-trust output. Use `health-ephi` and `agentic-llm`. Activate HHS/NIST SP 800-66, privacy sources, LLM sources. |

@@ -137,7 +137,7 @@ def main() -> int:
         expect_success_contains(
             [args.python, str(calibrator), "--skill-root", str(baseline)],
             "baseline source taxonomy calibration",
-            ["SOURCE_TAXONOMY_CALIBRATION_OK 238 cases"],
+            ["SOURCE_TAXONOMY_CALIBRATION_OK 250 cases"],
         )
         expect_success_contains(
             [args.python, str(planner), "--skill-root", str(baseline), "--surface", "patient pdf summarized by llm"],
