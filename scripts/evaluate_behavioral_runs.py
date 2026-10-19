@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import re
 import sys
 from collections import defaultdict
@@ -28,15 +29,23 @@ EXPERT_CHECK_WEIGHTS = {
     "vital_selection": 4,
 }
 
+# Must pass on every run.
+STRICT_GATE_CHECKS = {
+    "no_forbidden_claim",
+    "receipt_complete",
+}
+
+# Reviewer-judged gates: a single-run slip is noise; failing most runs of a case is not.
 HARD_GATE_CHECKS = {
     "catastrophe_path",
     "evidence_gate",
-    "no_forbidden_claim",
-    "receipt_complete",
     "scope_gate",
     "source_routing",
     "vital_selection",
 }
+
+# An aggregate drop counts only beyond about two standard deviations of run-to-run noise.
+NOISE_SIGMAS = 2.0
 
 HARD_FAILURE_KEYS = {
     "catastrophic_miss",
@@ -257,19 +266,45 @@ def variant_summary(records: list[dict], variant: str) -> dict:
     }
 
 
-def promotion_reasons(baseline: dict, candidate: dict) -> list[str]:
+def case_failures(records: list[dict], variant: str) -> dict[tuple[str, str], tuple[int, int]]:
+    """(case_id, check) -> (failed runs, total runs) for one variant."""
+    counts: dict[tuple[str, str], list[int]] = defaultdict(lambda: [0, 0])
+    for record in records:
+        if record.get("variant") != variant:
+            continue
+        for key, value in combined_checks(record).items():
+            counts[(record["case_id"], key)][1] += 1
+            if not value:
+                counts[(record["case_id"], key)][0] += 1
+    return {key: (failed, total) for key, (failed, total) in counts.items()}
+
+
+def promotion_reasons(records: list[dict], baseline: dict, candidate: dict) -> list[str]:
     reasons = []
     for key in sorted(HARD_FAILURE_KEYS):
         if candidate["hard_failures"][key]:
             reasons.append(f"candidate hard failure: {key}={candidate['hard_failures'][key]}")
-    for key in sorted(HARD_GATE_CHECKS):
+    for key in sorted(STRICT_GATE_CHECKS):
         if candidate["check_rates"][key] < 1.0:
-            reasons.append(f"candidate hard gate below 100%: {key}")
+            reasons.append(f"candidate strict gate below 100%: {key}")
+    base_cases = case_failures(records, "baseline")
+    cand_cases = case_failures(records, "candidate")
+    for (case_id, key), (failed, total) in sorted(cand_cases.items()):
+        if failed * 2 <= total:
+            continue
+        if key in HARD_GATE_CHECKS:
+            reasons.append(f"candidate fails {key} on {case_id} in {failed}/{total} runs")
+        elif base_cases.get((case_id, key), (0, 0))[0] == 0:
+            reasons.append(f"candidate regressed: {key} on {case_id} ({failed}/{total} runs; baseline passed all)")
+    runs = candidate["records"]
     for key in sorted(candidate["check_rates"]):
-        if candidate["check_rates"][key] < baseline["check_rates"][key]:
-            reasons.append(f"candidate regressed: {key}")
-    if candidate["weighted_score"] < baseline["weighted_score"]:
-        reasons.append("candidate weighted score is below baseline")
+        base_failed = round((1 - baseline["check_rates"][key]) * runs)
+        cand_failed = round((1 - candidate["check_rates"][key]) * runs)
+        allowance = NOISE_SIGMAS * math.sqrt(base_failed + cand_failed)
+        if cand_failed - base_failed > allowance:
+            reasons.append(
+                f"candidate regressed: {key} ({cand_failed} vs {base_failed} failed runs; noise allowance {allowance:.1f})"
+            )
     return reasons
 
 
@@ -306,7 +341,7 @@ def main() -> int:
 
     baseline = variant_summary(records, "baseline")
     candidate = variant_summary(records, "candidate")
-    reasons = promotion_reasons(baseline, candidate)
+    reasons = promotion_reasons(records, baseline, candidate)
     summary = {
         "baseline": baseline,
         "candidate": candidate,

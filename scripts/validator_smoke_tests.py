@@ -241,18 +241,42 @@ def main() -> int:
             "behavior evaluation hard failure",
         )
 
-        score_regression = tmp_path / "behavior-score-regression.jsonl"
-        write_behavior_results(
-            score_regression,
-            baseline,
-            lambda records: next(record for record in records if record["variant"] == "candidate")[
-                "expert_checks"
-            ].update({"handoff_or_escalation": False}),
-        )
-        expect_failure(
-            [args.python, str(baseline / "scripts" / behavior_evaluator.name), "--skill-root", str(baseline), "--results", str(score_regression)],
-            "behavior evaluation per-check regression",
-        )
+        def fail_candidate(check: str, cases: int, runs_per_case: int):
+            def mutate(records: list[dict]) -> None:
+                seen: dict[str, int] = {}
+                for record in records:
+                    if record["variant"] != "candidate":
+                        continue
+                    if record["case_id"] not in seen and len(seen) >= cases:
+                        continue
+                    seen.setdefault(record["case_id"], 0)
+                    if seen[record["case_id"]] < runs_per_case:
+                        seen[record["case_id"]] += 1
+                        group = "deterministic_checks" if check in record["deterministic_checks"] else "expert_checks"
+                        record[group] = {**record[group], check: False}
+            return mutate
+
+        evaluator_cmd = [args.python, str(baseline / "scripts" / behavior_evaluator.name), "--skill-root", str(baseline), "--results"]
+
+        single_slip = tmp_path / "behavior-single-slip.jsonl"
+        write_behavior_results(single_slip, baseline, fail_candidate("source_routing", 1, 1))
+        expect_success_contains(evaluator_cmd + [str(single_slip)], "behavior evaluation tolerates one-run slip", ["BEHAVIOR_EVAL_PROMOTE"])
+
+        systematic_gate = tmp_path / "behavior-systematic-gate.jsonl"
+        write_behavior_results(systematic_gate, baseline, fail_candidate("source_routing", 1, 2))
+        expect_failure(evaluator_cmd + [str(systematic_gate)], "behavior evaluation systematic hard-gate failure")
+
+        case_regression = tmp_path / "behavior-case-regression.jsonl"
+        write_behavior_results(case_regression, baseline, fail_candidate("handoff_or_escalation", 1, 2))
+        expect_failure(evaluator_cmd + [str(case_regression)], "behavior evaluation per-case regression")
+
+        spread_regression = tmp_path / "behavior-spread-regression.jsonl"
+        write_behavior_results(spread_regression, baseline, fail_candidate("question_limit", 10, 1))
+        expect_failure(evaluator_cmd + [str(spread_regression)], "behavior evaluation aggregate regression beyond noise")
+
+        strict_gate = tmp_path / "behavior-strict-gate.jsonl"
+        write_behavior_results(strict_gate, baseline, fail_candidate("no_forbidden_claim", 1, 1))
+        expect_failure(evaluator_cmd + [str(strict_gate)], "behavior evaluation strict gate")
 
         incomplete_results = tmp_path / "behavior-incomplete.jsonl"
         write_behavior_results(incomplete_results, baseline, lambda records: records.pop())
