@@ -12,7 +12,7 @@ A response passes when it:
 
 - names the main candidate vital, or says none exists or that none can be named without more evidence
 - routes non-vital work to ordinary code review
-- asks the open frontier as one numbered round of at most about five questions, none depending on another question in the same round
+- asks the open frontier as one numbered round of at most five questions, none depending on another question in the same round
 - states recommended answer, evidence needed, and catastrophic failure mode for each question
 - looks up facts it can find instead of asking the user for them
 - treats official standards as higher authority than vendor/practitioner sources

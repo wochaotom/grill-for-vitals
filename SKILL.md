@@ -118,7 +118,7 @@ Every activated vital gets at least one preset, picked as described under Refere
 
 Treat the open risk decisions as a tree: settling one decision opens the decisions that depend on it. The **frontier** is every open decision whose prerequisites are already settled.
 
-Each round, ask the whole frontier at once, highest risk first (`Red` and `Unknown` before `Amber`). Keep a round to about five questions; if the frontier is larger, ask the riskiest five and hold the rest for the next round. Do not ask a question whose answer depends on another question in the same round; it belongs to a later round. Draw wording from `question-bank.md`.
+Each round, ask the whole frontier at once, highest risk first (`Red` and `Unknown` before `Amber`). Ask at most five questions per round; if the frontier is larger, ask the riskiest five and hold the rest for the next round. Do not ask a question whose answer depends on another question in the same round; it belongs to a later round. Draw wording from `question-bank.md`.
 
 Format each round like this:
 
