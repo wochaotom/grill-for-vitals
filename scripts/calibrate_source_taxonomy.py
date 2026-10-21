@@ -17,7 +17,7 @@ EXPECTED_CATEGORY_COUNTS = {
     "ambiguity": 10,
     "adversarial": 10,
 }
-EXPECTED_REGRESSION_COUNT = 150
+EXPECTED_REGRESSION_COUNT = 151
 
 NO_COMPLIANCE_RULE = "Do not claim compliance or readiness from this plan."
 
@@ -287,6 +287,7 @@ REGRESSION_CASES = [
     case("regression-248", "regression", "SVG upload rendered by ImageMagick on the server", ["file-ingress"], allowed_presets=["file-ingress", "privacy-customer-content"]),
     case("regression-249", "regression", "OCR on uploaded patient PDFs before an LLM summarizes them", ["health-ephi", "agentic-llm", "file-ingress"], allowed_presets=["health-ephi", "agentic-llm", "file-ingress", "privacy-customer-content"]),
     case("regression-250", "regression", "fix typo in OCR docs only", []),
+    case("regression-251", "regression", "BOLA lets tenant A read tenant B's invoice", ["identity-auth", "privacy-customer-content"], allowed_presets=["identity-auth", "privacy-customer-content", "money-business-logic", "financial-customer-data"]),
 ]
 
 

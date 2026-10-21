@@ -121,7 +121,7 @@ python scripts/evaluate_behavioral_runs.py --results path/to/results.jsonl
 
 A promotion result requires every current public pressure case, at least three fresh repetitions per case and variant, matching runtime configuration, independent review, zero hard failures, no case failing a hard gate in most of its runs, and no per-check drop beyond run-to-run noise. The evaluator compares receipts; it does not run or judge the agent.
 
-Current calibration covers 250 routing and regression cases, including:
+Current calibration covers 251 routing and regression cases, including:
 
 - ransomware and restore-test failure
 - public object storage and signed URL exposure
