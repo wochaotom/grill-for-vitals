@@ -137,7 +137,7 @@ Q2. ...
 Reply "yes" to accept every recommendation, or answer by number.
 ```
 
-Lead with the main risk: when several vitals apply, pick the one whose failure would do the most harm (for example, high-trust advice that operators act on outranks the tool path that carries it out), and put it first.
+Lead with the main risk: when several vitals apply, pick the one whose failure would do the most harm (for example, high-trust advice that operators act on outranks the tool path that carries it out), and put it first. When no vital can be named yet, still use this format: write `Main risk: none named yet (Unknown)` and `Sources: no matching preset`, and ask the questions that would reveal the vital.
 
 Word each question so that "yes" accepts your recommended answer.
 
